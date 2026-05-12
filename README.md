@@ -7,6 +7,23 @@ A Slack-like team chat plugin for Filament v5. Add real-time messaging, channels
 ![PHP 8.3+](https://img.shields.io/badge/PHP-8.3+-blue?style=flat-square)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
+## Screenshots
+
+### Chat Overview
+Channels, messages, reactions, threads, and DMs — all in one Slack-like interface inside your Filament panel.
+
+![Chat Overview](screenshots/01-chat-overview.png)
+
+### Thread Panel
+Click any message to open a threaded conversation in the right panel.
+
+![Thread Panel](screenshots/02-thread-panel.png)
+
+### Dark Mode
+Full dark mode support out of the box.
+
+![Dark Mode](screenshots/03-dark-mode.png)
+
 ## Features
 
 - **Channels** - Public and private channels with member management
