@@ -52,6 +52,7 @@ class ThreadPanel extends Component
         );
 
         $this->replyBody = '';
+        $this->dispatch('message-sent');
     }
 
     public function render()
