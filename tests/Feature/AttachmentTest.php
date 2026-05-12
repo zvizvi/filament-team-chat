@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Models\Attachment;
 use Filament\TeamChat\Models\Channel;
+use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Notifications\NewDirectMessageNotification;
 use Filament\TeamChat\Notifications\NewMentionNotification;
+use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {

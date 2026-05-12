@@ -20,10 +20,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tc_channels', function (Blueprint $table) {
+            $table->dropIndex(['team_id']);
             $table->dropColumn('team_id');
         });
 
         Schema::table('tc_conversations', function (Blueprint $table) {
+            $table->dropIndex(['team_id']);
             $table->dropColumn('team_id');
         });
     }

@@ -1,25 +1,38 @@
 {
     "name": "qalainau/filament-team-chat",
     "description": "A Slack-like team chat plugin for Filament v5",
-    "keywords": ["filament", "laravel", "chat", "team", "slack"],
+    "keywords": ["filament", "laravel", "chat", "team", "slack", "filament-plugin", "livewire"],
+    "homepage": "https://github.com/qalainau/filament-team-chat",
     "license": "MIT",
     "type": "library",
+    "authors": [
+        {
+            "name": "Qalainau",
+            "homepage": "https://github.com/qalainau"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "filament/filament": "^5.0",
         "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
-        "laravel/pint": "^1.0"
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "pestphp/pest-plugin-livewire": "^4.0"
     },
     "autoload": {
         "psr-4": {
-            "Filament\\TeamChat\\": "src/"
+            "Filament\\TeamChat\\": "src/",
+            "Filament\\TeamChat\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Filament\\TeamChat\\Tests\\": "tests/"
+            "Filament\\TeamChat\\Tests\\": "tests/",
+            "Filament\\TeamChat\\Tests\\Fixtures\\": "tests/Fixtures/"
         }
     },
     "extra": {
@@ -28,6 +41,16 @@
                 "Filament\\TeamChat\\FilamentTeamChatServiceProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/pint"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

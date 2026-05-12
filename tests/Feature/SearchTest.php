@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Actions\SearchMessages;
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Models\Channel;
+use Filament\TeamChat\Tests\Fixtures\User;
 
 beforeEach(function () {
     $this->user = User::factory()->create();

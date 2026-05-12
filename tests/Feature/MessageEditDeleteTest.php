@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Models\Message;
+use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Support\Str;
 
 beforeEach(function () {

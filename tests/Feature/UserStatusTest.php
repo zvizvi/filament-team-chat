@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Models\UserStatus;
+use Filament\TeamChat\Tests\Fixtures\User;
 
 beforeEach(function () {
     $this->user = User::factory()->create();

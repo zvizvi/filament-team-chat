@@ -16,17 +16,17 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigrations([
-                'create_tc_channels_table',
-                'create_tc_channel_user_table',
-                'create_tc_messages_table',
-                'create_tc_conversations_table',
-                'create_tc_conversation_user_table',
-                'create_tc_reactions_table',
-                'create_tc_read_receipts_table',
-                'create_tc_mentions_table',
-                'create_tc_attachments_table',
-                'create_tc_user_statuses_table',
-                'add_team_id_to_tc_tables',
+                '01_create_tc_channels_table',
+                '02_create_tc_channel_user_table',
+                '03_create_tc_messages_table',
+                '04_create_tc_conversations_table',
+                '05_create_tc_conversation_user_table',
+                '06_create_tc_reactions_table',
+                '07_create_tc_read_receipts_table',
+                '08_create_tc_mentions_table',
+                '09_create_tc_attachments_table',
+                '10_create_tc_user_statuses_table',
+                '11_add_team_id_to_tc_tables',
             ]);
     }
 

@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Actions\ToggleReaction;
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Models\Reaction;
+use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Database\QueryException;
 
 beforeEach(function () {

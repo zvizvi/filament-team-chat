@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use Filament\TeamChat\Models\Channel;
+use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Database\QueryException;
 
 beforeEach(function () {
