@@ -57,23 +57,6 @@ trait HasTeamChat
      */
     public function findOrCreateDirectMessage(int $otherUserId): Conversation
     {
-        if ($otherUserId === $this->getKey()) {
-            // Self-DM: find or create a conversation with only yourself
-            $existing = $this->conversations()
-                ->where('is_group', false)
-                ->whereHas('participants', fn ($q) => $q->havingRaw('count(*) = 1'))
-                ->first();
-
-            if ($existing) {
-                return $existing;
-            }
-
-            $conversation = Conversation::create(['is_group' => false]);
-            $conversation->participants()->attach($this->getKey());
-
-            return $conversation;
-        }
-
         $existing = $this->conversations()
             ->where('is_group', false)
             ->whereHas('participants', fn ($q) => $q->where('user_id', $otherUserId))
@@ -84,7 +67,9 @@ trait HasTeamChat
         }
 
         $conversation = Conversation::create(['is_group' => false]);
-        $conversation->participants()->attach([$this->getKey(), $otherUserId]);
+
+        $userIds = array_unique([$this->getKey(), $otherUserId]);
+        $conversation->participants()->attach($userIds);
 
         return $conversation;
     }
