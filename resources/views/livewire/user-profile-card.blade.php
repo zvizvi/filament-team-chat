@@ -39,15 +39,17 @@
 
                 {{-- Actions --}}
                 <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-3 flex gap-2">
-                    <button
-                        wire:click="startDm"
-                        class="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
-                    >
-                        メッセージを送信
-                    </button>
+                    @if($userId !== auth()->id())
+                        <button
+                            wire:click="startDm"
+                            class="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                        >
+                            メッセージを送信
+                        </button>
+                    @endif
                     <button
                         wire:click="close"
-                        class="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        class="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                         閉じる
                     </button>
