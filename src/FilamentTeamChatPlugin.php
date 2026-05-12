@@ -5,7 +5,6 @@ namespace Filament\TeamChat;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\TeamChat\Pages\TeamChat;
-use Filament\TeamChat\Resources\ChannelResource;
 
 class FilamentTeamChatPlugin implements Plugin
 {
@@ -21,13 +20,9 @@ class FilamentTeamChatPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel
-            ->pages([
-                TeamChat::class,
-            ])
-            ->resources([
-                ChannelResource::class,
-            ]);
+        $panel->pages([
+            TeamChat::class,
+        ]);
     }
 
     public function boot(Panel $panel): void

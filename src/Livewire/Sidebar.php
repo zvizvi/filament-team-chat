@@ -39,9 +39,10 @@ class Sidebar extends Component
     }
 
     #[On('message-sent')]
+    #[On('channel-updated')]
     public function refreshSidebar(): void
     {
-        // Triggers re-render to update unread badges
+        // Triggers re-render to update unread badges and channel names
     }
 
     public function selectConversation(int $conversationId): void

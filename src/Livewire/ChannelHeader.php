@@ -4,12 +4,13 @@ namespace Filament\TeamChat\Livewire;
 
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Models\Conversation;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ChannelHeader extends Component
 {
-    public ?string $headerType = null; // 'channel' or 'conversation'
+    public ?string $headerType = null;
 
     public ?string $headerName = null;
 
@@ -18,6 +19,16 @@ class ChannelHeader extends Component
     public ?int $headerModelId = null;
 
     public int $memberCount = 0;
+
+    public bool $isOwner = false;
+
+    public bool $isEditing = false;
+
+    public string $editName = '';
+
+    public string $editTopic = '';
+
+    public string $editType = 'public';
 
     public function mount(?string $initialType = null, ?int $initialId = null): void
     {
@@ -40,6 +51,7 @@ class ChannelHeader extends Component
             $this->headerDescription = $channel->topic;
             $this->memberCount = $channel->members->count();
             $this->isOwner = $channel->members->where('id', auth()->id())->first()?->pivot?->role === 'owner';
+            $this->isEditing = false;
         }
     }
 
@@ -54,10 +66,63 @@ class ChannelHeader extends Component
             $this->headerName = $conversation->getDisplayNameForUser(auth()->user());
             $this->headerDescription = $conversation->is_group ? 'グループDM' : 'ダイレクトメッセージ';
             $this->memberCount = $conversation->participants->count();
+            $this->isOwner = false;
+            $this->isEditing = false;
         }
     }
 
-    public bool $isOwner = false;
+    public function startEditing(): void
+    {
+        if ($this->headerType !== 'channel' || ! $this->isOwner) {
+            return;
+        }
+
+        $channel = Channel::find($this->headerModelId);
+
+        if (! $channel) {
+            return;
+        }
+
+        $this->editName = $channel->name;
+        $this->editTopic = $channel->topic ?? '';
+        $this->editType = $channel->type;
+        $this->isEditing = true;
+    }
+
+    public function cancelEditing(): void
+    {
+        $this->isEditing = false;
+    }
+
+    public function saveChannel(): void
+    {
+        if ($this->headerType !== 'channel' || ! $this->isOwner) {
+            return;
+        }
+
+        $this->validate([
+            'editName' => 'required|string|max:255',
+            'editType' => 'required|in:public,private',
+        ]);
+
+        $channel = Channel::find($this->headerModelId);
+
+        if (! $channel) {
+            return;
+        }
+
+        $channel->update([
+            'name' => $this->editName,
+            'slug' => Str::slug($this->editName),
+            'topic' => $this->editTopic ?: null,
+            'type' => $this->editType,
+        ]);
+
+        $this->headerName = $channel->name;
+        $this->headerDescription = $channel->topic;
+        $this->isEditing = false;
+        $this->dispatch('channel-updated');
+    }
 
     public function showMembers(): void
     {
@@ -68,19 +133,13 @@ class ChannelHeader extends Component
 
     public function archiveChannel(): void
     {
-        if ($this->headerType !== 'channel' || ! $this->headerModelId) {
+        if ($this->headerType !== 'channel' || ! $this->headerModelId || ! $this->isOwner) {
             return;
         }
 
         $channel = Channel::find($this->headerModelId);
 
         if (! $channel) {
-            return;
-        }
-
-        $pivot = $channel->members()->where('user_id', auth()->id())->first()?->pivot;
-
-        if (! $pivot || $pivot->role !== 'owner') {
             return;
         }
 
