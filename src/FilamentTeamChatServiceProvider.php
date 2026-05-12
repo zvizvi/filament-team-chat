@@ -2,14 +2,6 @@
 
 namespace Filament\TeamChat;
 
-use Filament\TeamChat\Livewire\ChannelHeader;
-use Filament\TeamChat\Livewire\MemberList;
-use Filament\TeamChat\Livewire\MessageComposer;
-use Filament\TeamChat\Livewire\MessageFeed;
-use Filament\TeamChat\Livewire\SearchModal;
-use Filament\TeamChat\Livewire\Sidebar;
-use Filament\TeamChat\Livewire\ThreadPanel;
-use Filament\TeamChat\Livewire\UserProfileCard;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -39,13 +31,11 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        Livewire::component('team-chat::sidebar', Sidebar::class);
-        Livewire::component('team-chat::message-feed', MessageFeed::class);
-        Livewire::component('team-chat::message-composer', MessageComposer::class);
-        Livewire::component('team-chat::channel-header', ChannelHeader::class);
-        Livewire::component('team-chat::thread-panel', ThreadPanel::class);
-        Livewire::component('team-chat::search-modal', SearchModal::class);
-        Livewire::component('team-chat::member-list', MemberList::class);
-        Livewire::component('team-chat::user-profile-card', UserProfileCard::class);
+        Livewire::addNamespace(
+            namespace: 'team-chat',
+            classNamespace: 'Filament\\TeamChat\\Livewire',
+            classPath: __DIR__.'/Livewire',
+            classViewPath: __DIR__.'/../resources/views/livewire',
+        );
     }
 }
