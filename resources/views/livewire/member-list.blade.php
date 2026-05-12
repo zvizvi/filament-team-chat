@@ -5,7 +5,7 @@
 
             <div class="relative w-full max-w-sm rounded-xl bg-white dark:bg-gray-800 shadow-2xl overflow-hidden">
                 <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white">メンバー</h3>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('team-chat::messages.members') }}</h3>
                     <button wire:click="close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         <x-heroicon-o-x-mark class="h-5 w-5" />
                     </button>

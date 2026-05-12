@@ -14,19 +14,19 @@
             @endif
         </div>
         <div class="flex items-center gap-2">
-            <button wire:click="showMembers" class="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" title="メンバー一覧">
+            <button wire:click="showMembers" class="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" title="{{ __('team-chat::messages.members') }}">
                 <x-heroicon-o-users class="h-4 w-4" />
                 {{ $memberCount }}
             </button>
             @if($headerType === 'channel' && $isOwner)
-                <button wire:click="startEditing" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" title="チャンネル設定">
+                <button wire:click="startEditing" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" title="{{ __('team-chat::messages.channel_settings') }}">
                     <x-heroicon-o-cog-6-tooth class="h-4 w-4" />
                 </button>
                 <button
                     wire:click="archiveChannel"
-                    wire:confirm="このチャンネルをアーカイブしますか？"
+                    wire:confirm="{{ __('team-chat::messages.archive_confirm') }}"
                     class="text-gray-400 hover:text-yellow-500 transition-colors"
-                    title="チャンネルをアーカイブ"
+                    title="{{ __('team-chat::messages.archive_channel') }}"
                 >
                     <x-heroicon-o-archive-box class="h-4 w-4" />
                 </button>
@@ -40,30 +40,30 @@
                     <input
                         type="text"
                         wire:model="editName"
-                        placeholder="チャンネル名"
+                        placeholder="{{ __('team-chat::messages.channel_name') }}"
                         class="flex-1 rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                     />
                     <select
                         wire:model="editType"
                         class="rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                     >
-                        <option value="public">パブリック</option>
-                        <option value="private">プライベート</option>
+                        <option value="public">{{ __('team-chat::messages.public') }}</option>
+                        <option value="private">{{ __('team-chat::messages.private') }}</option>
                     </select>
                 </div>
                 <input
                     type="text"
                     wire:model="editTopic"
-                    placeholder="トピック（任意）"
+                    placeholder="{{ __('team-chat::messages.topic_placeholder') }}"
                     class="w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                 />
             </div>
             <div class="flex items-center gap-1 shrink-0">
                 <button type="submit" class="rounded-md bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700">
-                    保存
+                    {{ __('team-chat::messages.save') }}
                 </button>
                 <button type="button" wire:click="cancelEditing" class="rounded-md px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-                    キャンセル
+                    {{ __('team-chat::messages.cancel') }}
                 </button>
             </div>
         </form>

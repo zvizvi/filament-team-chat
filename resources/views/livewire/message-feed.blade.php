@@ -2,7 +2,7 @@
     @if($this->messages->isEmpty())
         <div class="flex h-full items-center justify-center">
             <p class="text-gray-400 dark:text-gray-500 text-sm">
-                まだメッセージがありません。最初のメッセージを送信しましょう！
+                {{ __('team-chat::messages.no_messages') }}
             </p>
         </div>
     @else
@@ -25,7 +25,7 @@
                             {{ $message->created_at->format('H:i') }}
                         </span>
                         @if($message->isEdited())
-                            <span class="text-xs text-gray-400 dark:text-gray-500">(編集済み)</span>
+                            <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('team-chat::messages.edited') }}</span>
                         @endif
 
                         {{-- Action bar (visible on hover) --}}
@@ -33,14 +33,14 @@
                             <button
                                 wire:click="openThread({{ $message->id }})"
                                 class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0.5"
-                                title="返信"
+                                title="{{ __('team-chat::messages.reply') }}"
                             >
                                 <x-heroicon-o-chat-bubble-left class="h-4 w-4" />
                             </button>
                             <button
                                 wire:click="toggleEmojiPicker({{ $message->id }})"
                                 class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0.5"
-                                title="リアクション"
+                                title="{{ __('team-chat::messages.react') }}"
                             >
                                 <x-heroicon-o-face-smile class="h-4 w-4" />
                             </button>
@@ -48,15 +48,15 @@
                                 <button
                                     wire:click="startEditing({{ $message->id }})"
                                     class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0.5"
-                                    title="編集"
+                                    title="{{ __('team-chat::messages.edit') }}"
                                 >
                                     <x-heroicon-o-pencil-square class="h-4 w-4" />
                                 </button>
                                 <button
                                     wire:click="deleteMessage({{ $message->id }})"
-                                    wire:confirm="このメッセージを削除しますか？"
+                                    wire:confirm="{{ __('team-chat::messages.delete_confirm') }}"
                                     class="text-gray-400 hover:text-red-500 p-0.5"
-                                    title="削除"
+                                    title="{{ __('team-chat::messages.delete') }}"
                                 >
                                     <x-heroicon-o-trash class="h-4 w-4" />
                                 </button>
@@ -74,9 +74,9 @@
                                 autofocus
                             />
                             <div class="mt-1 flex gap-2 text-xs">
-                                <button type="submit" class="text-primary-600 hover:text-primary-700 font-medium">保存</button>
-                                <button type="button" wire:click="cancelEditing" class="text-gray-400 hover:text-gray-600">キャンセル</button>
-                                <span class="text-gray-400">Enterで保存 / Escでキャンセル</span>
+                                <button type="submit" class="text-primary-600 hover:text-primary-700 font-medium">{{ __('team-chat::messages.save') }}</button>
+                                <button type="button" wire:click="cancelEditing" class="text-gray-400 hover:text-gray-600">{{ __('team-chat::messages.cancel') }}</button>
+                                <span class="text-gray-400">{{ __('team-chat::messages.edit_hint') }}</span>
                             </div>
                         </form>
                     @else
@@ -155,7 +155,7 @@
                             class="mt-1 flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400 hover:underline"
                         >
                             <x-heroicon-o-chat-bubble-left class="h-3.5 w-3.5" />
-                            {{ $message->replies_count }}件の返信
+                            {{ $message->replies_count }} {{ Str::plural('reply', $message->replies_count) }}
                         </button>
                     @endif
                 </div>

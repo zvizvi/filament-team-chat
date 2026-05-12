@@ -12,7 +12,7 @@
                     <input
                         type="text"
                         wire:model.live.debounce.300ms="query"
-                        placeholder="メッセージを検索..."
+                        placeholder="{{ __('team-chat::messages.search_messages') }}"
                         class="flex-1 border-0 bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-0"
                         autofocus
                     />
@@ -25,11 +25,11 @@
                 <div class="max-h-96 overflow-y-auto">
                     @if(strlen(trim($query)) < 2)
                         <p class="p-4 text-center text-sm text-gray-400">
-                            2文字以上入力してください
+                            {{ __('team-chat::messages.search_min_chars') }}
                         </p>
                     @elseif($this->results->isEmpty())
                         <p class="p-4 text-center text-sm text-gray-400">
-                            「{{ $query }}」に一致するメッセージが見つかりません
+                            {{ __('team-chat::messages.search_no_results', ['query' => $query]) }}
                         </p>
                     @else
                         @foreach($this->results as $message)

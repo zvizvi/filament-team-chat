@@ -64,7 +64,7 @@ class ChannelHeader extends Component
             $this->headerType = 'conversation';
             $this->headerModelId = $conversationId;
             $this->headerName = $conversation->getDisplayNameForUser(auth()->user());
-            $this->headerDescription = $conversation->is_group ? 'グループDM' : 'ダイレクトメッセージ';
+            $this->headerDescription = $conversation->is_group ? __('team-chat::messages.group_dm') : __('team-chat::messages.direct_message');
             $this->memberCount = $conversation->participants->count();
             $this->isOwner = false;
             $this->isEditing = false;

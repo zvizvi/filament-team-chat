@@ -41,8 +41,8 @@
                 <div class="flex flex-1 items-center justify-center text-gray-400 dark:text-gray-500">
                     <div class="text-center">
                         <x-heroicon-o-chat-bubble-left-right class="mx-auto h-12 w-12 mb-4" />
-                        <p class="text-lg font-medium">チャンネルまたはDMを選択してください</p>
-                        <p class="text-sm mt-1">左のサイドバーからチャンネルを選択するか、DMを開始してください。</p>
+                        <p class="text-lg font-medium">{{ __('team-chat::messages.select_channel_or_dm') }}</p>
+                        <p class="text-sm mt-1">{{ __('team-chat::messages.select_channel_hint') }}</p>
                     </div>
                 </div>
             @endif

@@ -15,6 +15,7 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasConfigFile()
             ->hasViews()
+            ->hasTranslations()
             ->hasMigrations([
                 '01_create_tc_channels_table',
                 '02_create_tc_channel_user_table',

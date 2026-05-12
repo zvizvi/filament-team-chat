@@ -20,7 +20,7 @@
                             'bg-gray-400' => ! $isOnline,
                         ])></span>
                         <span class="text-xs text-primary-100">
-                            {{ $isOnline ? 'オンライン' : 'オフライン' }}
+                            {{ $isOnline ? __('team-chat::messages.online') : __('team-chat::messages.offline') }}
                         </span>
                     </div>
                 </div>
@@ -28,11 +28,11 @@
                 {{-- Info --}}
                 <div class="px-6 py-4 space-y-3">
                     <div>
-                        <p class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">ユーザー名</p>
+                        <p class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ __('team-chat::messages.username') }}</p>
                         <p class="text-sm text-gray-900 dark:text-white">{{ $userName }}</p>
                     </div>
                     <div>
-                        <p class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">メール</p>
+                        <p class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ __('team-chat::messages.email') }}</p>
                         <p class="text-sm text-gray-900 dark:text-white">{{ $email }}</p>
                     </div>
                 </div>
@@ -44,14 +44,14 @@
                             wire:click="startDm"
                             class="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
                         >
-                            メッセージを送信
+                            {{ __('team-chat::messages.send_message') }}
                         </button>
                     @endif
                     <button
                         wire:click="close"
                         class="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
-                        閉じる
+                        {{ __('team-chat::messages.close') }}
                     </button>
                 </div>
             </div>

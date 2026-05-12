@@ -10,7 +10,7 @@
                     >
                         <span class="text-gray-400">#</span>
                         <span>channel</span>
-                        <span class="ml-auto text-xs text-gray-400">全員に通知</span>
+                        <span class="ml-auto text-xs text-gray-400">{{ __('team-chat::messages.notify_all') }}</span>
                     </button>
                     <button
                         wire:click="insertMention('here')"
@@ -18,7 +18,7 @@
                     >
                         <span class="text-gray-400">@</span>
                         <span>here</span>
-                        <span class="ml-auto text-xs text-gray-400">オンライン全員</span>
+                        <span class="ml-auto text-xs text-gray-400">{{ __('team-chat::messages.notify_online') }}</span>
                     </button>
                     @foreach($this->mentionSuggestions as $user)
                         <button
@@ -62,7 +62,7 @@
                 <input
                     type="text"
                     wire:model.live.debounce.300ms="body"
-                    placeholder="メッセージを入力... (@でメンション)"
+                    placeholder="{{ __('team-chat::messages.type_message') }}"
                     class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                     autocomplete="off"
                 />

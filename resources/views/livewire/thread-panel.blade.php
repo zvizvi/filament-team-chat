@@ -1,7 +1,7 @@
 <div class="flex h-full flex-col" wire:poll.{{ config('team-chat.polling.messages', 3) }}s>
     {{-- Header --}}
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-        <h3 class="font-semibold text-gray-900 dark:text-white">スレッド</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('team-chat::messages.thread') }}</h3>
         <button wire:click="$dispatch('close-thread')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <x-heroicon-o-x-mark class="h-5 w-5" />
         </button>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                {{ $this->replies->count() }}件の返信
+                {{ $this->replies->count() }} {{ Str::plural('reply', $this->replies->count()) }}
             </p>
         </div>
     @endif
@@ -63,7 +63,7 @@
 
         @if($this->replies->isEmpty())
             <p class="text-center text-sm text-gray-400 dark:text-gray-500 py-4">
-                まだ返信がありません
+                {{ __('team-chat::messages.no_replies') }}
             </p>
         @endif
     </div>
@@ -74,7 +74,7 @@
             <input
                 type="text"
                 wire:model="replyBody"
-                placeholder="返信を入力..."
+                placeholder="{{ __('team-chat::messages.type_reply') }}"
                 class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                 autocomplete="off"
             />
