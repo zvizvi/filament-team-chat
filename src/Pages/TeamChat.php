@@ -4,6 +4,7 @@ namespace Filament\TeamChat\Pages;
 
 use BackedEnum;
 use Filament\Pages\Page;
+use Filament\Support\Enums\Width;
 use Livewire\Attributes\On;
 
 class TeamChat extends Page
@@ -19,6 +20,13 @@ class TeamChat extends Page
     protected static ?int $navigationSort = 1;
 
     protected string $view = 'team-chat::pages.team-chat';
+
+    protected ?string $heading = '';
+
+    public function getMaxContentWidth(): Width|string|null
+    {
+        return Width::Full;
+    }
 
     public ?string $activeType = null; // 'channel' or 'conversation'
 

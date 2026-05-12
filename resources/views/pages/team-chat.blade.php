@@ -1,6 +1,12 @@
 <x-filament-panels::page>
-    <div class="tc-chat-container flex -mx-8 -mt-8 -mb-8 h-[calc(100vh-4rem)] overflow-hidden border-t border-gray-200 dark:border-gray-700">
-        {{-- Sidebar --}}
+    <style>
+        /* Hide page header and reset content padding for full-viewport chat */
+        .fi-page-header { display: none !important; }
+        .fi-page > div > .fi-page-content { padding: 0 !important; margin: -1.5rem; }
+    </style>
+
+    <div class="tc-chat-container flex h-[calc(100vh-4rem)] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        {{-- Chat Sidebar --}}
         <livewire:team-chat::sidebar :active-type="$activeType" :active-id="$activeId" />
 
         {{-- Main content area --}}
