@@ -1,0 +1,31 @@
+{
+    "name": "filament/team-chat",
+    "description": "A Slack-like team chat plugin for Filament v5",
+    "keywords": ["filament", "laravel", "chat", "team", "slack"],
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "filament/filament": "^5.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Filament\\TeamChat\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Filament\\TeamChat\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Filament\\TeamChat\\FilamentTeamChatServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
