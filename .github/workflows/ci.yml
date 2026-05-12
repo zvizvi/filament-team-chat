@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Code Style (Pint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run Pint
+        run: vendor/bin/pint --test
+
+  dependencies:
+    name: Dependencies (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+  test:
+    name: Tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    needs: [lint, dependencies]
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, sqlite3
+          coverage: none
+          tools: composer:v2
+
+      - name: Create Laravel app
+        run: |
+          composer create-project laravel/laravel test-app --no-interaction --prefer-dist --quiet
+          cd test-app
+          composer config repositories.team-chat '{"type": "path", "url": "../"}'
+          composer require qalainau/filament-team-chat:@dev --no-interaction --quiet
+          composer require pestphp/pest pestphp/pest-plugin-laravel pestphp/pest-plugin-livewire --dev --no-interaction --quiet
+
+      - name: Setup database and migrations
+        working-directory: test-app
+        run: |
+          php artisan vendor:publish --tag=team-chat-migrations --no-interaction
+          php artisan make:notifications-table --no-interaction
+
+      - name: Prepare test environment
+        working-directory: test-app
+        run: |
+          # Add HasTeamChat to User model
+          sed -i 's/use HasFactory, Notifiable;/use HasFactory, \\Filament\\TeamChat\\Concerns\\HasTeamChat, Notifiable;/' app/Models/User.php
+          # Enable RefreshDatabase
+          sed -i 's|// ->use(RefreshDatabase::class)|->use(RefreshDatabase::class)|' tests/Pest.php
+          # Copy tests
+          mkdir -p tests/Feature/TeamChat
+          cp vendor/qalainau/filament-team-chat/tests/Feature/*.php tests/Feature/TeamChat/
+
+      - name: Run tests
+        working-directory: test-app
+        run: php artisan test --compact --filter=TeamChat
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
