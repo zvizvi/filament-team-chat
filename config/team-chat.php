@@ -44,4 +44,20 @@ return [
         'directory' => 'team-chat-attachments',
         'max_size' => 10240, // KB
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Multi-Tenancy
+    |--------------------------------------------------------------------------
+    |
+    | Enable multi-tenancy to scope channels and conversations per team.
+    | When enabled, set the tenant model and the method to resolve the
+    | current tenant ID (e.g. from Filament's tenant or auth).
+    |
+    */
+    'tenancy' => [
+        'enabled' => false,
+        'model' => null, // e.g. \App\Models\Team::class
+        'resolver' => null, // callable or class that returns current tenant ID
+    ],
 ];

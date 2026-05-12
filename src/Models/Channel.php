@@ -2,6 +2,7 @@
 
 namespace Filament\TeamChat\Models;
 
+use Filament\TeamChat\Concerns\BelongsToTeam;
 use Filament\TeamChat\Concerns\HasReadReceipts;
 use Filament\TeamChat\Database\Factories\ChannelFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Channel extends Model
 {
     /** @use HasFactory<ChannelFactory> */
-    use HasFactory, HasReadReceipts, SoftDeletes;
+    use BelongsToTeam, HasFactory, HasReadReceipts, SoftDeletes;
 
     protected static string $factory = ChannelFactory::class;
 
@@ -28,6 +29,7 @@ class Channel extends Model
         'type',
         'created_by',
         'archived_at',
+        'team_id',
     ];
 
     protected function casts(): array

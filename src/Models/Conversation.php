@@ -2,6 +2,7 @@
 
 namespace Filament\TeamChat\Models;
 
+use Filament\TeamChat\Concerns\BelongsToTeam;
 use Filament\TeamChat\Concerns\HasReadReceipts;
 use Filament\TeamChat\Database\Factories\ConversationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Conversation extends Model
 {
     /** @use HasFactory<ConversationFactory> */
-    use HasFactory, HasReadReceipts;
+    use BelongsToTeam, HasFactory, HasReadReceipts;
 
     protected static string $factory = ConversationFactory::class;
 
@@ -21,6 +22,7 @@ class Conversation extends Model
     protected $fillable = [
         'is_group',
         'name',
+        'team_id',
     ];
 
     protected function casts(): array
