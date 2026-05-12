@@ -25,6 +25,13 @@ class Sidebar extends Component
 
     public function selectChannel(int $channelId): void
     {
+        $channel = Channel::findOrFail($channelId);
+
+        // Auto-join public channels on first access
+        if ($channel->isPublic() && ! $channel->members()->where('user_id', auth()->id())->exists()) {
+            $channel->members()->attach(auth()->id(), ['role' => 'member']);
+        }
+
         $this->activeType = 'channel';
         $this->activeId = $channelId;
         $this->dispatch('channel-selected', channelId: $channelId);
@@ -115,7 +122,14 @@ class Sidebar extends Component
 
     public function getChannelsProperty(): Collection
     {
-        return auth()->user()->channels()->whereNull('archived_at')->orderBy('name')->get();
+        $joinedChannels = auth()->user()->channels()->whereNull('archived_at')->get();
+
+        $publicChannels = Channel::where('type', 'public')
+            ->whereNull('archived_at')
+            ->whereNotIn('id', $joinedChannels->pluck('id'))
+            ->get();
+
+        return $joinedChannels->merge($publicChannels)->sortBy('name')->values();
     }
 
     public function getBrowsableChannelsProperty(): Collection
