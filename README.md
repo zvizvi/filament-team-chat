@@ -39,7 +39,7 @@ A Slack-like team chat plugin for Filament v5. Add real-time messaging, channels
 Install the package via Composer:
 
 ```bash
-composer require filament/team-chat
+composer require qalainau/filament-team-chat
 ```
 
 Publish and run the migrations:

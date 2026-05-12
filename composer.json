@@ -1,5 +1,5 @@
 {
-    "name": "filament/team-chat",
+    "name": "qalainau/filament-team-chat",
     "description": "A Slack-like team chat plugin for Filament v5",
     "keywords": ["filament", "laravel", "chat", "team", "slack"],
     "license": "MIT",
