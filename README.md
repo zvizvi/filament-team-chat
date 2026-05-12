@@ -111,16 +111,28 @@ php artisan make:notifications-table
 php artisan migrate
 ```
 
-### 4. Custom Filament Theme
+### 4. Tailwind CSS Setup
 
-If you use a custom Filament theme, add the package views so Tailwind picks up the classes:
+The plugin uses Tailwind CSS classes that must be included in your Filament theme.
+
+**If you don't have a custom theme yet**, create one first:
+
+```bash
+php artisan filament:theme
+```
+
+Then add the package views as a source in your theme file:
 
 ```css
 /* resources/css/filament/admin/theme.css */
 @source '../../../../vendor/qalainau/filament-team-chat/resources/views/**/*';
 ```
 
-Then run `npm run build`.
+Build the theme:
+
+```bash
+npm run build
+```
 
 **Done!** Visit `/admin/team-chat` to start chatting.
 
