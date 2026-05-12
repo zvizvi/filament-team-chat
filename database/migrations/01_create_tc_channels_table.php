@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('tc_channels', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('team_id')->nullable()->index();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();

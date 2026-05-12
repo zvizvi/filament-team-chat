@@ -27,7 +27,6 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
                 '08_create_tc_mentions_table',
                 '09_create_tc_attachments_table',
                 '10_create_tc_user_statuses_table',
-                '11_add_team_id_to_tc_tables',
             ]);
     }
 
