@@ -19,6 +19,11 @@ Click any message to open a threaded conversation in the right panel.
 
 ![Thread Panel](screenshots/02-thread-panel.png)
 
+### File Attachments
+Share images and documents with inline previews.
+
+![File Attachments](screenshots/04-attachments.png)
+
 ### Dark Mode
 Full dark mode support out of the box.
 
