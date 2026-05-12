@@ -6,6 +6,7 @@ use Filament\TeamChat\Models\Channel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Isolate;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Isolate]
@@ -35,6 +36,12 @@ class Sidebar extends Component
         $this->activeType = 'channel';
         $this->activeId = $channelId;
         $this->dispatch('channel-selected', channelId: $channelId);
+    }
+
+    #[On('message-sent')]
+    public function refreshSidebar(): void
+    {
+        // Triggers re-render to update unread badges
     }
 
     public function selectConversation(int $conversationId): void

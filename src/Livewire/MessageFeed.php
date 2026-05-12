@@ -47,6 +47,12 @@ class MessageFeed extends Component
         $this->lastMessageId = 0;
     }
 
+    #[On('message-sent')]
+    public function refreshMessages(): void
+    {
+        // Triggers re-evaluation of the messages computed property
+    }
+
     public function getMessagesProperty(): Collection
     {
         if (! $this->messageableType || ! $this->messageableId) {
