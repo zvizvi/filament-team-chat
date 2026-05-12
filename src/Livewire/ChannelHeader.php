@@ -19,6 +19,15 @@ class ChannelHeader extends Component
 
     public int $memberCount = 0;
 
+    public function mount(?string $initialType = null, ?int $initialId = null): void
+    {
+        if ($initialType === 'channel' && $initialId) {
+            $this->loadChannel($initialId);
+        } elseif ($initialType === 'conversation' && $initialId) {
+            $this->loadConversation($initialId);
+        }
+    }
+
     #[On('channel-selected')]
     public function loadChannel(int $channelId): void
     {

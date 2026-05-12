@@ -1,4 +1,4 @@
-<div class="flex-1 overflow-y-auto p-4 space-y-1" id="message-feed">
+<div class="h-full overflow-y-auto p-4 space-y-1" id="message-feed" wire:poll.{{ config('team-chat.polling.messages', 3) }}s>
     @if($this->messages->isEmpty())
         <div class="flex h-full items-center justify-center">
             <p class="text-gray-400 dark:text-gray-500 text-sm">

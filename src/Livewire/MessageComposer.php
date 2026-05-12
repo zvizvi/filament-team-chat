@@ -28,6 +28,17 @@ class MessageComposer extends Component
 
     public string $mentionQuery = '';
 
+    public function mount(?string $initialType = null, ?int $initialId = null): void
+    {
+        if ($initialType === 'channel' && $initialId) {
+            $this->messageableType = Channel::class;
+            $this->messageableId = $initialId;
+        } elseif ($initialType === 'conversation' && $initialId) {
+            $this->messageableType = Conversation::class;
+            $this->messageableId = $initialId;
+        }
+    }
+
     #[On('channel-selected')]
     public function setChannel(int $channelId): void
     {

@@ -35,7 +35,6 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
             namespace: 'team-chat',
             classNamespace: 'Filament\\TeamChat\\Livewire',
             classPath: __DIR__.'/Livewire',
-            classViewPath: __DIR__.'/../resources/views/livewire',
         );
     }
 }
