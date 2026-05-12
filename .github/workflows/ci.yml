@@ -85,9 +85,25 @@ jobs:
         run: |
           # Add HasTeamChat to User model
           sed -i 's/use HasFactory, Notifiable;/use HasFactory, \\Filament\\TeamChat\\Concerns\\HasTeamChat, Notifiable;/' app/Models/User.php
-          # Enable RefreshDatabase
-          sed -i 's|// ->use(RefreshDatabase::class)|->use(RefreshDatabase::class)|' tests/Pest.php
-          # Copy tests
+
+          # Initialize Pest if not already set up
+          if [ ! -f tests/Pest.php ]; then
+            vendor/bin/pest --init --no-interaction 2>/dev/null || true
+          fi
+
+          # Create Pest.php with RefreshDatabase
+          cat > tests/Pest.php << 'PEST'
+          <?php
+
+          use Illuminate\Foundation\Testing\RefreshDatabase;
+          use Tests\TestCase;
+
+          pest()->extend(TestCase::class)
+              ->use(RefreshDatabase::class)
+              ->in('Feature');
+          PEST
+
+          # Copy package tests
           mkdir -p tests/Feature/TeamChat
           cp vendor/qalainau/filament-team-chat/tests/Feature/*.php tests/Feature/TeamChat/
 
