@@ -1,19 +1,18 @@
 <x-filament-panels::page>
     <style>
-        /* Remove page header */
         .fi-page-header { display: none !important; }
-
-        /* Make the entire Filament content area fill viewport without scrolling */
-        .fi-page { height: 100%; }
-        .fi-page > div { height: 100%; display: flex; flex-direction: column; }
-        .fi-page > div > .fi-page-content { flex: 1; min-height: 0; padding: 0 !important; }
-
-        /* Prevent body/main scrolling */
-        .fi-body-has-navigation .fi-main { height: 100dvh; overflow: hidden; }
-        .fi-main-ctn { height: 100%; overflow: hidden; }
     </style>
 
-    <div class="tc-chat-container flex h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
+    <div
+        x-data="{ height: 0 }"
+        x-init="
+            const update = () => { height = window.innerHeight - $el.getBoundingClientRect().top - 16 };
+            update();
+            window.addEventListener('resize', update);
+        "
+        :style="'height: ' + height + 'px'"
+        class="tc-chat-container flex overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
+    >
         {{-- Chat Sidebar --}}
         <livewire:team-chat::sidebar :active-type="$activeType" :active-id="$activeId" :wire:key="'sidebar'" />
 
