@@ -18,6 +18,13 @@ class ThreadPanel extends Component
 
     public string $replyBody = '';
 
+    public function mount(?int $parentMessageId = null): void
+    {
+        if ($parentMessageId) {
+            $this->loadThread($parentMessageId);
+        }
+    }
+
     #[On('open-thread')]
     public function loadThread(int $messageId): void
     {
