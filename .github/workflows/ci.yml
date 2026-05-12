@@ -86,10 +86,57 @@ jobs:
           # Add HasTeamChat to User model
           sed -i 's/use HasFactory, Notifiable;/use HasFactory, \\Filament\\TeamChat\\Concerns\\HasTeamChat, Notifiable;/' app/Models/User.php
 
-          # Initialize Pest if not already set up
-          if [ ! -f tests/Pest.php ]; then
-            vendor/bin/pest --init --no-interaction 2>/dev/null || true
-          fi
+          # Create Filament AdminPanelProvider with plugin registered
+          mkdir -p app/Providers/Filament
+          cat > app/Providers/Filament/AdminPanelProvider.php << 'PROVIDER'
+          <?php
+
+          namespace App\Providers\Filament;
+
+          use Filament\Http\Middleware\Authenticate;
+          use Filament\Http\Middleware\AuthenticateSession;
+          use Filament\Http\Middleware\DisableBladeIconComponents;
+          use Filament\Http\Middleware\DispatchServingFilamentEvent;
+          use Filament\Panel;
+          use Filament\PanelProvider;
+          use Filament\TeamChat\FilamentTeamChatPlugin;
+          use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+          use Illuminate\Cookie\Middleware\EncryptCookies;
+          use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+          use Illuminate\Routing\Middleware\SubstituteBindings;
+          use Illuminate\Session\Middleware\StartSession;
+          use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+          class AdminPanelProvider extends PanelProvider
+          {
+              public function panel(Panel $panel): Panel
+              {
+                  return $panel
+                      ->default()
+                      ->id('admin')
+                      ->path('admin')
+                      ->login()
+                      ->middleware([
+                          EncryptCookies::class,
+                          AddQueuedCookiesToResponse::class,
+                          StartSession::class,
+                          AuthenticateSession::class,
+                          ShareErrorsFromSession::class,
+                          PreventRequestForgery::class,
+                          SubstituteBindings::class,
+                          DisableBladeIconComponents::class,
+                          DispatchServingFilamentEvent::class,
+                      ])
+                      ->authMiddleware([
+                          Authenticate::class,
+                      ])
+                      ->plugin(FilamentTeamChatPlugin::make());
+              }
+          }
+          PROVIDER
+
+          # Register the provider
+          php artisan config:clear
 
           # Create Pest.php with RefreshDatabase
           cat > tests/Pest.php << 'PEST'
