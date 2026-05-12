@@ -1,64 +1,69 @@
 # Filament Team Chat
 
-A Slack-like team chat plugin for Filament v5. Add real-time messaging, channels, direct messages, threads, reactions, file sharing, and more to any Filament panel.
+**A complete Slack-like team chat for Filament v5.** Drop it into any panel — channels, DMs, threads, reactions, mentions, file sharing, search, and unread tracking work out of the box. Self-hosted, no external services needed.
 
-![Filament v5](https://img.shields.io/badge/Filament-v5-amber?style=flat-square)
-![Laravel v13](https://img.shields.io/badge/Laravel-v13-red?style=flat-square)
+![Filament v5](https://img.shields.io/badge/Filament-v5.x-amber?style=flat-square)
+![Laravel v13](https://img.shields.io/badge/Laravel-v13.x-red?style=flat-square)
 ![PHP 8.3+](https://img.shields.io/badge/PHP-8.3+-blue?style=flat-square)
+![Tests](https://img.shields.io/badge/Tests-102%20passing-brightgreen?style=flat-square)
 ![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## Screenshots
-
-### Chat Overview
-Channels, messages, reactions, threads, and DMs — all in one Slack-like interface inside your Filament panel.
+---
 
 ![Chat Overview](screenshots/01-chat-overview.png)
 
-### Thread Panel
-Click any message to open a threaded conversation in the right panel.
+## Why Filament Team Chat?
 
-![Thread Panel](screenshots/02-thread-panel.png)
+- **Zero external dependencies** — No Pusher, no Redis, no WebSocket server. Works with Livewire polling out of the box.
+- **Filament-native** — Lives inside your Filament panel. Uses your existing auth, your existing users, your existing database.
+- **Multi-tenant ready** — Optional `team_id` scoping with automatic Filament tenant detection.
+- **Self-hosted** — Your data stays on your server. No third-party chat services.
 
-### File Attachments
-Share images and documents with inline previews.
+## Screenshots
 
-![File Attachments](screenshots/04-attachments.png)
-
-### Dark Mode
-Full dark mode support out of the box.
-
-![Dark Mode](screenshots/03-dark-mode.png)
+<table>
+  <tr>
+    <td><strong>Threaded Conversations</strong><br/>Click any message to reply in a side panel — just like Slack.<br/><br/><img src="screenshots/02-thread-panel.png" alt="Thread Panel" /></td>
+    <td><strong>File Attachments</strong><br/>Share images (with inline preview) and documents.<br/><br/><img src="screenshots/04-attachments.png" alt="File Attachments" /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Dark Mode</strong><br/>Full dark mode support, following your Filament panel theme.<br/><br/><img src="screenshots/03-dark-mode.png" alt="Dark Mode" /></td>
+  </tr>
+</table>
 
 ## Features
 
-- **Channels** - Public and private channels with member management
-- **Public Channel Auto-Join** - Public channels visible to all users, auto-join on first click
-- **Direct Messages** - 1-on-1 and group DMs
-- **Threads** - Reply to any message in a threaded conversation via hover action or reply link
-- **Reactions** - Emoji reactions on messages (8 built-in emojis)
-- **Mentions** - @user, @channel, and @here with autocomplete
-- **File Attachments** - Upload and preview images, documents, and more
-- **Message Edit/Delete** - Edit and soft-delete your own messages
-- **Unread Management** - Unread counts, badges, and automatic read tracking
-- **Instant Refresh** - Sent messages appear immediately (no polling delay for sender)
-- **Search** - Full-text message search with access control
-- **Online Status** - Real-time presence indicators and user profiles
-- **Notifications** - Database notifications for mentions and DMs
-- **Channel Admin** - Filament resource for channel CRUD management
-- **Real-time Updates** - Livewire polling (configurable intervals) with instant refresh on send
-- **Multi-Tenancy Ready** - Optional `team_id` scoping for multi-tenant applications
-- **Dark Mode** - Full dark mode support via Tailwind CSS
+### Messaging
+- **Channels** — Public and private channels with member management
+- **Direct Messages** — 1-on-1 and group DMs
+- **Threads** — Reply to any message in a side panel, with reply count on the main feed
+- **Markdown** — Messages support **bold**, *italic*, `code`, lists, and links
+- **Edit & Delete** — Edit or soft-delete your own messages (hover action bar)
 
-## Requirements
+### Collaboration
+- **Reactions** — 8 built-in emoji reactions (toggle on/off)
+- **@Mentions** — `@user`, `@channel`, `@here` with live autocomplete
+- **File Attachments** — Upload multiple files per message, image previews, download links
+- **Search** — Full-text search across all channels and DMs you belong to
 
-- PHP 8.3+
-- Laravel 13+
-- Filament 5+
-- Livewire 4+
+### Awareness
+- **Unread Badges** — Per-channel/DM unread counts with automatic read tracking
+- **Instant Refresh** — Your own messages appear immediately; others update via polling
+- **Online Status** — Presence indicators and custom status text
+- **Notifications** — Database notifications for @mentions and DMs
+
+### Management
+- **Inline Channel Settings** — Edit name, topic, and visibility directly in the chat header (owner only)
+- **Archive Channels** — Soft-archive channels to hide them from the sidebar
+- **Public Auto-Join** — Public channels appear for all users; clicking auto-joins
+- **Member List** — View channel/DM members with online indicators and profile cards
+
+### Technical
+- **Multi-Tenancy** — Optional `team_id` scoping with Filament tenant auto-detection
+- **Dark Mode** — Follows your Filament panel theme
+- **102 Tests** — Comprehensive test suite with Orchestra Testbench
 
 ## Installation
-
-Install the package via Composer:
 
 ```bash
 composer require qalainau/filament-team-chat
@@ -71,17 +76,9 @@ php artisan vendor:publish --tag=team-chat-migrations
 php artisan migrate
 ```
 
-Optionally publish the config file:
-
-```bash
-php artisan vendor:publish --tag=team-chat-config
-```
-
 ## Getting Started
 
 ### 1. Register the Plugin
-
-Add the plugin to your Filament panel provider:
 
 ```php
 use Filament\TeamChat\FilamentTeamChatPlugin;
@@ -96,202 +93,110 @@ public function panel(Panel $panel): Panel
 
 ### 2. Add the Trait to Your User Model
 
-Add the `HasTeamChat` trait to your User model:
-
 ```php
 use Filament\TeamChat\Concerns\HasTeamChat;
 
 class User extends Authenticatable
 {
     use HasTeamChat;
-
-    // ...
 }
 ```
 
-### 3. Create the Notifications Table (if needed)
+### 3. Notifications Table (if needed)
 
-If your application does not already have a `notifications` table (required for database notifications on mentions and DMs):
+Required for @mention and DM notifications:
 
 ```bash
 php artisan make:notifications-table
 php artisan migrate
 ```
 
-### 4. Add Tailwind Source (Custom Theme)
+### 4. Custom Filament Theme
 
-If you use a custom Filament theme, add the package views to your theme's CSS so Tailwind classes are compiled:
+If you use a custom Filament theme, add the package views so Tailwind picks up the classes:
 
 ```css
 /* resources/css/filament/admin/theme.css */
-@source '../../../../vendor/filament/team-chat/resources/views/**/*';
+@source '../../../../vendor/qalainau/filament-team-chat/resources/views/**/*';
 ```
 
-Then rebuild: `npm run build`
+Then run `npm run build`.
 
-That's it! Visit `/admin/team-chat` to start chatting.
+**Done!** Visit `/admin/team-chat` to start chatting.
 
 ## Configuration
 
-The config file `config/team-chat.php` allows you to customize:
+Publish the config file:
+
+```bash
+php artisan vendor:publish --tag=team-chat-config
+```
 
 ```php
+// config/team-chat.php
 return [
-    // Table prefix to avoid collisions
     'table_prefix' => 'tc_',
 
-    // User model class
     'user_model' => \App\Models\User::class,
 
-    // Polling intervals (seconds)
     'polling' => [
-        'messages' => 3,
-        'sidebar' => 5,
+        'messages' => 3,  // seconds
+        'sidebar' => 5,   // seconds
     ],
 
-    // File upload settings
     'uploads' => [
         'disk' => 'public',
         'directory' => 'team-chat-attachments',
         'max_size' => 10240, // KB
     ],
 
-    // Multi-tenancy (optional)
     'tenancy' => [
         'enabled' => false,
-        'model' => null, // e.g. \App\Models\Team::class
-        'resolver' => null, // callable or class that returns current tenant ID
+        'model' => null,    // e.g. \App\Models\Team::class
+        'resolver' => null, // null = Filament::getTenant()
     ],
 ];
 ```
 
-### Polling Intervals
-
-Adjust polling intervals to balance between responsiveness and server load:
-
-```php
-'polling' => [
-    'messages' => 3,  // Message feed refresh (seconds)
-    'sidebar' => 5,   // Sidebar unread counts refresh (seconds)
-],
-```
-
 ### Multi-Tenancy
 
-Enable multi-tenancy to scope channels and conversations per team:
+Set `tenancy.enabled` to `true` to scope channels and conversations per team. The resolver supports:
 
-```php
-'tenancy' => [
-    'enabled' => true,
-    'model' => \App\Models\Team::class,
-    'resolver' => null, // null = auto-detect from Filament tenant
-],
-```
-
-When enabled, all channels and conversations are automatically scoped to the current tenant. The resolver supports three modes:
-
-1. **null** (default) - Auto-detects from `Filament::getTenant()`
-2. **Callable** - `'resolver' => fn () => auth()->user()->current_team_id`
-3. **Class** - `'resolver' => \App\Services\TenantResolver::class` (must have a `resolve()` method)
-
-## Architecture
-
-### Database Tables
-
-All tables use a `tc_` prefix to avoid collisions with your application:
-
-| Table | Purpose |
-|---|---|
-| `tc_channels` | Chat channels (public/private), with optional `team_id` |
-| `tc_channel_user` | Channel membership pivot |
-| `tc_conversations` | Direct messages (1-on-1 and group), with optional `team_id` |
-| `tc_conversation_user` | DM participant pivot |
-| `tc_messages` | Messages (polymorphic: Channel or Conversation) |
-| `tc_reactions` | Emoji reactions on messages |
-| `tc_attachments` | File attachments on messages |
-| `tc_mentions` | @user, @channel, @here mentions |
-| `tc_read_receipts` | Per-user read tracking (polymorphic) |
-| `tc_user_statuses` | Online status and user profiles |
-
-### Models
-
-```
-Channel         - Public/private channels with members (BelongsToTeam, HasReadReceipts)
-Conversation    - 1-on-1 and group direct messages (BelongsToTeam, HasReadReceipts)
-Message         - Polymorphic messages with Markdown support
-Reaction        - Emoji reactions (toggle behavior)
-Attachment      - File uploads with image detection
-Mention         - Parsed @mentions from message body
-ReadReceipt     - Last-read message tracking per user
-UserStatus      - Online presence and custom status
-```
-
-### Livewire Components
-
-The chat UI is composed of 8 Livewire components, registered via `Livewire::addNamespace()`:
-
-| Component | Purpose | Polling |
+| Mode | Config | Behavior |
 |---|---|---|
-| `Sidebar` | Channel/DM list, unread badges, create/join, browse public channels | 5s |
-| `MessageFeed` | Message list, reactions, edit/delete, reply button | 3s |
-| `MessageComposer` | Text input, file upload, mention autocomplete | - |
-| `ChannelHeader` | Channel name, topic, member count, archive | - |
-| `ThreadPanel` | Thread replies with own composer | 3s |
-| `SearchModal` | Full-text search across channels/DMs | - |
-| `MemberList` | Channel/DM member list with online status | - |
-| `UserProfileCard` | User profile popup with DM action | - |
+| Auto (default) | `null` | Uses `Filament::getTenant()` |
+| Callable | `fn () => auth()->user()->team_id` | Custom closure |
+| Class | `TenantResolver::class` | Must have `resolve()` method |
 
-Components also respond to events for instant refresh (e.g. `message-sent` triggers immediate re-render of MessageFeed and Sidebar).
+## Programmatic API
 
-### Actions
+All features are available as PHP classes — useful for seeders, commands, or integrations.
 
-Business logic is encapsulated in action classes:
-
-| Action | Purpose |
-|---|---|
-| `SendMessage` | Create message, parse mentions, store attachments, notify |
-| `ToggleReaction` | Add/remove emoji reaction (toggle) |
-| `MarkAsRead` | Update read receipt for channel/conversation |
-| `ParseMentions` | Extract @mentions and create styled HTML |
-| `SearchMessages` | Search messages with access control |
-
-## Usage
-
-### Channels
-
-Create a channel programmatically:
+### Channels & DMs
 
 ```php
 use Filament\TeamChat\Models\Channel;
 
+// Create a channel
 $channel = Channel::create([
     'name' => 'general',
     'slug' => 'general',
     'type' => 'public', // or 'private'
     'created_by' => $user->id,
 ]);
-
 $channel->members()->attach($user->id, ['role' => 'owner']);
-```
 
-> Public channels are visible to all users in the sidebar. When a user clicks a public channel they haven't joined, they are automatically added as a member.
-
-### Direct Messages
-
-Start a DM or find an existing one:
-
-```php
-// 1-on-1 DM (idempotent - returns existing if found)
-$conversation = $user->findOrCreateDirectMessage($otherUserId);
+// DMs (idempotent — returns existing conversation if found)
+$dm = $user->findOrCreateDirectMessage($otherUser->id);
 
 // Group DM
-$conversation = $user->createGroupConversation(
+$group = $user->createGroupConversation(
     userIds: [$user2->id, $user3->id],
     name: 'Project Team',
 );
 ```
 
-### Sending Messages
+### Messages
 
 ```php
 use Filament\TeamChat\Actions\SendMessage;
@@ -299,98 +204,73 @@ use Filament\TeamChat\Actions\SendMessage;
 $message = app(SendMessage::class)->execute(
     messageable: $channel,    // Channel or Conversation
     userId: $user->id,
-    body: 'Hello @Bob! Check this **bold** text.',
-    parentId: null,           // Set for thread replies
-    files: [],                // Array of UploadedFile
+    body: 'Hello @Jordan! Check this **bold** text.',
+    parentId: null,           // set for thread replies
+    files: [],                // array of UploadedFile
 );
 ```
 
-### Reactions
+### Reactions, Read Tracking, Search
 
 ```php
-use Filament\TeamChat\Actions\ToggleReaction;
+use Filament\TeamChat\Actions\{ToggleReaction, MarkAsRead, SearchMessages};
 
-// Returns true if added, false if removed
-$added = app(ToggleReaction::class)->execute(
-    messageId: $message->id,
-    userId: $user->id,
-    emoji: '👍',
-);
-```
+// Toggle reaction (returns true=added, false=removed)
+app(ToggleReaction::class)->execute($message->id, $user->id, '👍');
 
-### Unread Management
-
-```php
-use Filament\TeamChat\Actions\MarkAsRead;
-
-// Get unread count
-$count = $channel->unreadCountFor($user->id);
+// Unread count
+$channel->unreadCountFor($user->id); // => 3
 
 // Mark as read
 app(MarkAsRead::class)->execute($channel, $user->id);
+
+// Search (respects channel/DM membership)
+$results = app(SearchMessages::class)->execute($user->id, 'deploy', limit: 20);
 ```
 
-### Search
+## Architecture
 
-```php
-use Filament\TeamChat\Actions\SearchMessages;
+### Database
 
-// Only searches channels/DMs the user belongs to
-$results = app(SearchMessages::class)->execute(
-    userId: $user->id,
-    query: 'search term',
-    limit: 20,
-);
-```
+All tables use a configurable `tc_` prefix:
 
-### Online Status
+| Table | Purpose |
+|---|---|
+| `tc_channels` | Public/private channels (optional `team_id`) |
+| `tc_channel_user` | Channel membership pivot with roles |
+| `tc_conversations` | 1-on-1 and group DMs (optional `team_id`) |
+| `tc_conversation_user` | DM participant pivot |
+| `tc_messages` | Polymorphic messages (Channel or Conversation) |
+| `tc_reactions` | Emoji reactions per message per user |
+| `tc_attachments` | File metadata (name, path, MIME, size) |
+| `tc_mentions` | @user / @channel / @here per message |
+| `tc_read_receipts` | Per-user last-read tracking (polymorphic) |
+| `tc_user_statuses` | Online status, display name, custom status |
 
-```php
-// Mark user as online
-$user->touchOnline();
+### Livewire Components
 
-// Get or create status
-$status = $user->getOrCreateStatus();
-$status->update([
-    'display_name' => 'Cool Name',
-    'status_emoji' => '🏖️',
-    'status_text' => 'On vacation',
-]);
-```
-
-## Filament Integration
-
-### Chat Page
-
-The plugin registers a custom Filament page at `/admin/team-chat` with a full-viewport Slack-like layout. The page uses Alpine.js to dynamically calculate the available height, ensuring the chat fills the viewport without page scrolling. Filament's authentication middleware is preserved.
-
-### Channel Resource
-
-An admin resource at `/admin/channels` provides CRUD management for channels with:
-
-- Searchable/sortable channel list
-- Channel type filter (public/private)
-- Member count column
-- Create with automatic owner assignment
-- Edit channel details
-- Delete channels
-
-### Navigation
-
-Both the Team Chat page and Channel Resource appear in the Filament navigation:
-
-| Item | Icon | Group |
+| Component | Role | Updates |
 |---|---|---|
-| Team Chat | `heroicon-o-chat-bubble-left-right` | - |
-| Channel Management | `heroicon-o-hashtag` | Team Chat |
+| `Sidebar` | Channel/DM list, unread badges, create/join | 5s poll + event |
+| `MessageFeed` | Messages, reactions, edit/delete, reply | 3s poll + event |
+| `MessageComposer` | Input, file upload, @mention autocomplete | on submit |
+| `ChannelHeader` | Name, topic, members, settings, archive | on event |
+| `ThreadPanel` | Threaded replies with own composer | 3s poll |
+| `SearchModal` | Full-text search across channels/DMs | on input |
+| `MemberList` | Member list with online status | on open |
+| `UserProfileCard` | Profile popup with DM shortcut | on open |
 
 ## Testing
 
-The package includes a comprehensive test suite (107 tests). Run tests in your application:
-
 ```bash
+# Run in the package directory
+composer test
+
+# Or in your Laravel app
 php artisan test --filter=TeamChat
 ```
+
+102 tests covering channels, DMs, threads, reactions, mentions, attachments, search, read receipts, notifications, user status, and channel management.
 
 ## Changelog
 
