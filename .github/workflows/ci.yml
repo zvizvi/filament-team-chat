@@ -135,7 +135,8 @@ jobs:
           }
           PROVIDER
 
-          # Register the provider
+          # Register the provider in bootstrap/providers.php
+          sed -i 's|return \[|return [\n    \\App\\Providers\\Filament\\AdminPanelProvider::class,|' bootstrap/providers.php
           php artisan config:clear
 
           # Create Pest.php with RefreshDatabase
