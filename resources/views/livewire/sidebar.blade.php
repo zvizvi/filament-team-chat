@@ -1,4 +1,4 @@
-<div class="flex h-full w-64 flex-col bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700"
+<div class="flex h-full w-64 flex-col bg-gray-50 dark:bg-gray-800 border-e border-gray-200 dark:border-gray-700"
      wire:poll.{{ config('team-chat.polling.sidebar', 5) }}s>
     {{-- Workspace Header --}}
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
@@ -64,7 +64,7 @@
                     <span class="text-gray-400">#</span>
                     <span class="truncate flex-1 text-left">{{ $channel->name }}</span>
                     @if($unread > 0)
-                        <span class="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
+                        <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
                             {{ $unread > 99 ? '99+' : $unread }}
                         </span>
                     @endif
@@ -152,7 +152,7 @@
                     <x-heroicon-o-chat-bubble-oval-left class="h-4 w-4 flex-shrink-0 text-gray-400" />
                     <span class="truncate flex-1 text-left">{{ $conversation->getDisplayNameForUser(auth()->user()) }}</span>
                     @if($unread > 0)
-                        <span class="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
+                        <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
                             {{ $unread > 99 ? '99+' : $unread }}
                         </span>
                     @endif
