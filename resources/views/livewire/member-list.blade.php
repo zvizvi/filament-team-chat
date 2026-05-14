@@ -27,7 +27,7 @@
                                     'bg-gray-300 dark:bg-gray-600' => ! $member->userStatus?->is_online,
                                 ])></span>
                             </div>
-                            <div class="min-w-0 flex-1 text-left">
+                            <div class="min-w-0 flex-1 text-start">
                                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                     {{ $member->userStatus?->display_name ?? $member->name }}
                                 </p>
