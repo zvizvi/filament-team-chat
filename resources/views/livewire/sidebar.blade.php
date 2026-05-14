@@ -62,7 +62,7 @@
                     ])
                 >
                     <span class="text-gray-400">#</span>
-                    <span class="truncate flex-1 text-left">{{ $channel->name }}</span>
+                    <span class="truncate flex-1 text-start">{{ $channel->name }}</span>
                     @if($unread > 0)
                         <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
                             {{ $unread > 99 ? '99+' : $unread }}
@@ -150,7 +150,7 @@
                     ])
                 >
                     <x-heroicon-o-chat-bubble-oval-left class="h-4 w-4 flex-shrink-0 text-gray-400" />
-                    <span class="truncate flex-1 text-left">{{ $conversation->getDisplayNameForUser(auth()->user()) }}</span>
+                    <span class="truncate flex-1 text-start">{{ $conversation->getDisplayNameForUser(auth()->user()) }}</span>
                     @if($unread > 0)
                         <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
                             {{ $unread > 99 ? '99+' : $unread }}
