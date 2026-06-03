@@ -103,7 +103,7 @@ class MessageComposer extends Component
             return;
         }
 
-        $body = trim($this->body) !== '' ? $this->body : '📎 ファイルを添付しました';
+        $body = trim($this->body) !== '' ? $this->body : __('team-chat::messages.attachment_placeholder');
 
         $messageable = $this->messageableType::findOrFail($this->messageableId);
 

@@ -53,6 +53,6 @@ class Conversation extends Model
         return $this->participants
             ->reject(fn (Model $participant) => $participant->getKey() === $user->getKey())
             ->pluck('name')
-            ->join(', ') ?: 'DM';
+            ->join(', ') ?: __('team-chat::messages.direct_message');
     }
 }

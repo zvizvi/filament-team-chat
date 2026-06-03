@@ -33,6 +33,7 @@ return [
     'type_message' => 'Type a message... (@ to mention)',
     'notify_all' => 'Notify all',
     'notify_online' => 'Notify online',
+    'attachment_placeholder' => '📎 File attached',
 
     // Channel Header
     'members' => 'Members',
@@ -62,6 +63,7 @@ return [
     'close' => 'Close',
 
     // Team Chat Page
+    'navigation_label' => 'Team Chat',
     'select_channel_or_dm' => 'Select a channel or DM',
     'select_channel_hint' => 'Choose a channel from the sidebar or start a DM.',
 

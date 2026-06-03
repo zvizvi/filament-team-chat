@@ -11,11 +11,17 @@ class TeamChat extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static ?string $navigationLabel = 'Team Chat';
-
-    protected static ?string $title = 'Team Chat';
-
     protected static ?string $slug = 'team-chat';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('team-chat::messages.navigation_label');
+    }
+
+    public function getTitle(): string
+    {
+        return __('team-chat::messages.navigation_label');
+    }
 
     protected static ?int $navigationSort = 1;
 
