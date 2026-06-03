@@ -95,3 +95,33 @@ it('enforces unique slugs', function () {
         'created_by' => $this->user->id,
     ]);
 })->throws(QueryException::class);
+
+it('generates a slug from a channel name', function () {
+    expect(Channel::generateUniqueSlug('My Channel'))->toBe('my-channel');
+});
+
+it('falls back to a default slug when the name has nothing sluggable', function () {
+    expect(Channel::generateUniqueSlug('🎉'))->toBe('channel');
+});
+
+it('generates distinct slugs for channels with the same name', function () {
+    Channel::create([
+        'name' => 'General',
+        'slug' => Channel::generateUniqueSlug('General'),
+        'type' => 'public',
+        'created_by' => $this->user->id,
+    ]);
+
+    expect(Channel::generateUniqueSlug('General'))->toBe('general-2');
+});
+
+it('ignores the given channel id when regenerating its own slug', function () {
+    $channel = Channel::create([
+        'name' => 'General',
+        'slug' => Channel::generateUniqueSlug('General'),
+        'type' => 'public',
+        'created_by' => $this->user->id,
+    ]);
+
+    expect(Channel::generateUniqueSlug('General', $channel->id))->toBe('general');
+});
