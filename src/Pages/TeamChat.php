@@ -23,7 +23,10 @@ class TeamChat extends Page
         return __('team-chat::messages.navigation_label');
     }
 
-    protected static ?int $navigationSort = 1;
+    public static function getNavigationSort(): ?int
+    {
+        return config('team-chat.navigation_sort') ?? 1;
+    }
 
     protected string $view = 'team-chat::pages.team-chat';
 
