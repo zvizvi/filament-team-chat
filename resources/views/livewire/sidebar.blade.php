@@ -2,7 +2,7 @@
      wire:poll.{{ config('team-chat.polling.sidebar', 5) }}s>
     {{-- Workspace Header --}}
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white truncate">Team Chat</h2>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white truncate">{{ __('team-chat::messages.navigation_label') }}</h2>
         <button wire:click="$dispatch('open-search')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" title="{{ __('team-chat::messages.search') }}">
             <x-heroicon-o-magnifying-glass class="h-5 w-5" />
         </button>
