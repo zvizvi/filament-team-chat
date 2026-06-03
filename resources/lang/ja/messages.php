@@ -48,6 +48,7 @@ return [
     'thread' => 'スレッド',
     'no_replies' => 'まだ返信がありません',
     'type_reply' => '返信を入力...',
+    'replies_count' => ':count件の返信',
 
     // Search
     'search_messages' => 'メッセージを検索...',

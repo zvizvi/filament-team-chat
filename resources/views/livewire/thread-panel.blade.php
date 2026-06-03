@@ -29,7 +29,7 @@
                 </div>
             </div>
             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                {{ $this->replies->count() }} {{ Str::plural('reply', $this->replies->count()) }}
+                {{ trans_choice('team-chat::messages.replies_count', $this->replies->count(), ['count' => $this->replies->count()]) }}
             </p>
         </div>
     @endif

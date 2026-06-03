@@ -48,6 +48,7 @@ return [
     'thread' => 'Thread',
     'no_replies' => 'No replies yet',
     'type_reply' => 'Type a reply...',
+    'replies_count' => '{0}:count replies|{1}:count reply|[2,*]:count replies',
 
     // Search
     'search_messages' => 'Search messages...',

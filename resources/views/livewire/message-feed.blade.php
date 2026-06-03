@@ -153,7 +153,7 @@
                             class="mt-1 flex items-center gap-1 text-xs text-primary-600 dark:text-primary-400 hover:underline"
                         >
                             <x-heroicon-o-chat-bubble-left class="h-3.5 w-3.5" />
-                            {{ $message->replies_count }} {{ Str::plural('reply', $message->replies_count) }}
+                            {{ trans_choice('team-chat::messages.replies_count', $message->replies_count, ['count' => $message->replies_count]) }}
                         </button>
                     @endif
                 </div>
