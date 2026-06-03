@@ -25,9 +25,7 @@
                             wire:click="insertMention('{{ $user->name }}')"
                             class="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
-                            <div class="flex h-6 w-6 items-center justify-center rounded-md bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-semibold">
-                                {{ strtoupper(substr($user->name, 0, 1)) }}
-                            </div>
+                            <img src="{{ filament()->getUserAvatarUrl($user) }}" alt="{{ $user->name }}" class="h-6 w-6 rounded-full object-cover">
                             <span>{{ $user->name }}</span>
                         </button>
                     @endforeach

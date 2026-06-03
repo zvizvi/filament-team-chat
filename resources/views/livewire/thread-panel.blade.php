@@ -12,9 +12,7 @@
         <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3">
             <div class="flex gap-3">
                 <div class="flex-shrink-0">
-                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-semibold">
-                        {{ strtoupper(substr($parentMessage->user->name ?? '?', 0, 1)) }}
-                    </div>
+                    <img src="{{ $parentMessage->user ? filament()->getUserAvatarUrl($parentMessage->user) : '' }}" alt="{{ $parentMessage->user?->name }}" class="h-9 w-9 rounded-full object-cover">
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-baseline gap-2">
@@ -41,9 +39,7 @@
         @foreach($this->replies as $reply)
             <div class="flex gap-3 rounded-lg px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800/50" wire:key="reply-{{ $reply->id }}">
                 <div class="flex-shrink-0 pt-0.5">
-                    <div class="flex h-7 w-7 items-center justify-center rounded-md bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-semibold">
-                        {{ strtoupper(substr($reply->user->name ?? '?', 0, 1)) }}
-                    </div>
+                    <img src="{{ $reply->user ? filament()->getUserAvatarUrl($reply->user) : '' }}" alt="{{ $reply->user?->name }}" class="h-7 w-7 rounded-full object-cover">
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-baseline gap-2">

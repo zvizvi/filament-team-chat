@@ -39,9 +39,7 @@
                                 wire:key="search-{{ $message->id }}"
                             >
                                 <div class="flex-shrink-0 pt-0.5">
-                                    <div class="flex h-8 w-8 items-center justify-center rounded-md bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-semibold">
-                                        {{ strtoupper(substr($message->user->name ?? '?', 0, 1)) }}
-                                    </div>
+                                    <img src="{{ $message->user ? filament()->getUserAvatarUrl($message->user) : '' }}" alt="{{ $message->user?->name }}" class="h-8 w-8 rounded-full object-cover">
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <div class="flex items-baseline gap-2">

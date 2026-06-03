@@ -13,6 +13,8 @@ class UserProfileCard extends Component
 
     public ?string $displayName = null;
 
+    public ?string $avatarUrl = null;
+
     public ?string $userName = null;
 
     public ?string $email = null;
@@ -37,6 +39,7 @@ class UserProfileCard extends Component
         $this->userName = $user->name;
         $this->email = $user->email;
         $this->displayName = $status?->getDisplayName() ?? $user->name;
+        $this->avatarUrl = filament()->getUserAvatarUrl($user);
         $this->statusDisplay = $status?->getStatusDisplay();
         $this->isOnline = $status?->is_online ?? false;
         $this->isOpen = true;

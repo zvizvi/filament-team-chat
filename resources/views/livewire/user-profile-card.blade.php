@@ -6,9 +6,7 @@
             <div class="relative w-full max-w-sm rounded-xl bg-white dark:bg-gray-800 shadow-2xl overflow-hidden">
                 {{-- Header --}}
                 <div class="bg-primary-600 px-6 py-8 text-center">
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-2xl font-bold text-white">
-                        {{ strtoupper(substr($displayName ?? '?', 0, 1)) }}
-                    </div>
+                    <img src="{{ $avatarUrl }}" alt="{{ $displayName }}" class="mx-auto h-16 w-16 rounded-full object-cover ring-2 ring-white/30">
                     <h3 class="mt-3 text-lg font-semibold text-white">{{ $displayName }}</h3>
                     @if($statusDisplay)
                         <p class="mt-1 text-sm text-primary-100">{{ $statusDisplay }}</p>

@@ -10,9 +10,7 @@
             <div class="group flex gap-3 rounded-lg px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800/50" wire:key="message-{{ $message->id }}">
                 {{-- Avatar --}}
                 <div class="flex-shrink-0 pt-0.5">
-                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-semibold">
-                        {{ strtoupper(substr($message->user->name ?? '?', 0, 1)) }}
-                    </div>
+                    <img src="{{ $message->user ? filament()->getUserAvatarUrl($message->user) : '' }}" alt="{{ $message->user?->name }}" class="h-9 w-9 rounded-full object-cover">
                 </div>
 
                 {{-- Content --}}

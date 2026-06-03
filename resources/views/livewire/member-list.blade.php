@@ -18,9 +18,7 @@
                             class="flex w-full items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                         >
                             <div class="relative">
-                                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-semibold">
-                                    {{ strtoupper(substr($member->name, 0, 1)) }}
-                                </div>
+                                <img src="{{ filament()->getUserAvatarUrl($member) }}" alt="{{ $member->name }}" class="h-9 w-9 rounded-full object-cover">
                                 <span @class([
                                     'absolute -bottom-0.5 -end-0.5 h-3 w-3 rounded-full border-2 border-white dark:border-gray-800',
                                     'bg-green-400' => $member->userStatus?->is_online,
