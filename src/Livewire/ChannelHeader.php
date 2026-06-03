@@ -4,7 +4,6 @@ namespace Filament\TeamChat\Livewire;
 
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Models\Conversation;
-use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -113,7 +112,7 @@ class ChannelHeader extends Component
 
         $channel->update([
             'name' => $this->editName,
-            'slug' => Str::slug($this->editName),
+            'slug' => Channel::generateUniqueSlug($this->editName, $channel->id),
             'topic' => $this->editTopic ?: null,
             'type' => $this->editType,
         ]);

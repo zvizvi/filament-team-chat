@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Channel extends Model
 {
@@ -69,5 +70,30 @@ class Channel extends Model
     public function isArchived(): bool
     {
         return $this->archived_at !== null;
+    }
+
+    /**
+     * Build a unique, unicode-safe slug from a channel name.
+     *
+     * Str::slug() drops non-ASCII characters (e.g. Hebrew) to an empty string,
+     * which then collides on the unique slug column. We keep unicode letters and
+     * guarantee uniqueness across all teams and soft-deleted rows.
+     */
+    public static function generateUniqueSlug(string $name, int|string|null $ignoreId = null): string
+    {
+        $base = Str::slug($name, language: null) ?: 'channel';
+        $slug = $base;
+        $suffix = 1;
+
+        while (
+            static::withoutGlobalScopes()
+                ->where('slug', $slug)
+                ->when($ignoreId !== null, fn ($query) => $query->whereKeyNot($ignoreId))
+                ->exists()
+        ) {
+            $slug = $base.'-'.++$suffix;
+        }
+
+        return $slug;
     }
 }

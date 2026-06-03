@@ -4,7 +4,6 @@ namespace Filament\TeamChat\Livewire;
 
 use Filament\TeamChat\Models\Channel;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Isolate;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -66,7 +65,7 @@ class Sidebar extends Component
 
         $channel = Channel::create([
             'name' => $this->newChannelName,
-            'slug' => Str::slug($this->newChannelName),
+            'slug' => Channel::generateUniqueSlug($this->newChannelName),
             'type' => 'public',
             'created_by' => auth()->id(),
         ]);
