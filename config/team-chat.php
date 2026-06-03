@@ -26,6 +26,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User Scope
+    |--------------------------------------------------------------------------
+    |
+    | Optional Eloquent local scope (by name) applied to the user model when
+    | listing mentionable users, choosing DM recipients, and parsing @mentions.
+    | For example, 'active' calls User::scopeActive() so only active users are
+    | shown. Leave null to include all users.
+    |
+    */
+    'user_scope' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Navigation Sort
     |--------------------------------------------------------------------------
     |

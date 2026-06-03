@@ -86,6 +86,10 @@ class MessageComposer extends Component
 
         $query = $userModel::where('id', '!=', auth()->id());
 
+        if ($scope = config('team-chat.user_scope')) {
+            $query->{$scope}();
+        }
+
         if (trim($this->mentionQuery) !== '') {
             $query->where('name', 'like', '%'.trim($this->mentionQuery).'%');
         }

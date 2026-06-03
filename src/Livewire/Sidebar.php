@@ -160,9 +160,13 @@ class Sidebar extends Component
     {
         $userModel = config('team-chat.user_model');
 
-        return $userModel::where('id', '!=', auth()->id())
-            ->orderBy('name')
-            ->get(['id', 'name']);
+        $query = $userModel::where('id', '!=', auth()->id());
+
+        if ($scope = config('team-chat.user_scope')) {
+            $query->{$scope}();
+        }
+
+        return $query->orderBy('name')->get(['id', 'name']);
     }
 
     public function render()

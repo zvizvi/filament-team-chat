@@ -56,7 +56,13 @@ class ParseMentions
         // and non-ASCII characters, so we scan for each user's full name rather than
         // tokenizing on \w. Longest names first so "@First Last" is matched before a
         // shorter "@First" can claim part of it.
-        $candidates = $userModel::query()
+        $query = $userModel::query();
+
+        if ($scope = config('team-chat.user_scope')) {
+            $query->{$scope}();
+        }
+
+        $candidates = $query
             ->orderByRaw('LENGTH(name) DESC')
             ->get();
 
