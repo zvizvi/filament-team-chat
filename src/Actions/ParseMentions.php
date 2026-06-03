@@ -52,34 +52,45 @@ class ParseMentions
             }
         }
 
-        // Parse @username mentions
-        preg_match_all('/@(\w+)/', $message->body, $matches);
+        // Parse @username mentions by matching users' names. Names may contain spaces
+        // and non-ASCII characters, so we scan for each user's full name rather than
+        // tokenizing on \w. Longest names first so "@First Last" is matched before a
+        // shorter "@First" can claim part of it.
+        $candidates = $userModel::query()
+            ->orderByRaw('LENGTH(name) DESC')
+            ->get();
 
-        $mentionedNames = collect($matches[1] ?? [])
-            ->reject(fn (string $name) => in_array($name, ['channel', 'here']))
-            ->unique();
+        $detectionBody = $message->body;
 
-        if ($mentionedNames->isNotEmpty()) {
-            $users = $userModel::whereIn('name', $mentionedNames->all())->get();
+        foreach ($candidates as $user) {
+            // Match @Name not immediately followed by another letter/number, so a shorter
+            // name does not match inside a longer one (e.g. "@משה" inside "@משה הררי").
+            $pattern = '/@'.preg_quote($user->name, '/').'(?![\p{L}\p{N}_])/u';
 
-            foreach ($users as $user) {
-                Mention::create([
-                    'message_id' => $message->id,
-                    'user_id' => $user->id,
-                    'type' => 'user',
-                ]);
-
-                // Notify mentioned user (skip self)
-                if ($user->id !== $message->user_id) {
-                    $user->notify(new NewMentionNotification($message, 'user'));
-                }
-
-                $bodyHtml = preg_replace(
-                    '/@'.preg_quote($user->name, '/').'\b/',
-                    '<span class="tc-mention tc-mention--user" data-user-id="'.$user->id.'">@'.e($user->name).'</span>',
-                    $bodyHtml,
-                );
+            if (! preg_match($pattern, $detectionBody)) {
+                continue;
             }
+
+            // Blank out the matched span so overlapping shorter names cannot re-match it.
+            $detectionBody = preg_replace($pattern, str_repeat(' ', mb_strlen($user->name) + 1), $detectionBody, 1);
+
+            Mention::create([
+                'message_id' => $message->id,
+                'user_id' => $user->id,
+                'type' => 'user',
+            ]);
+
+            // Notify mentioned user (skip self)
+            if ($user->id !== $message->user_id) {
+                $user->notify(new NewMentionNotification($message, 'user'));
+            }
+
+            $bodyHtml = preg_replace(
+                $pattern,
+                '<span class="tc-mention tc-mention--user" data-user-id="'.$user->id.'">@'.e($user->name).'</span>',
+                $bodyHtml,
+                1,
+            );
         }
 
         return $bodyHtml;

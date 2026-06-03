@@ -57,7 +57,7 @@ class MessageComposer extends Component
 
     public function updatedBody(): void
     {
-        if (preg_match('/@(\w*)$/', $this->body, $matches)) {
+        if (preg_match('/@([^@\n]*)$/u', $this->body, $matches)) {
             $this->mentionQuery = $matches[1];
             $this->showMentionSuggestions = true;
         } else {
@@ -67,7 +67,7 @@ class MessageComposer extends Component
 
     public function insertMention(string $name): void
     {
-        $this->body = preg_replace('/@\w*$/', '@'.$name.' ', $this->body);
+        $this->body = preg_replace('/@[^@\n]*$/u', '@'.$name.' ', $this->body);
         $this->showMentionSuggestions = false;
     }
 
@@ -86,11 +86,11 @@ class MessageComposer extends Component
 
         $query = $userModel::where('id', '!=', auth()->id());
 
-        if ($this->mentionQuery !== '') {
-            $query->where('name', 'like', $this->mentionQuery.'%');
+        if (trim($this->mentionQuery) !== '') {
+            $query->where('name', 'like', '%'.trim($this->mentionQuery).'%');
         }
 
-        return $query->orderBy('name')->limit(5)->get(['id', 'name']);
+        return $query->orderBy('name')->limit(10)->get();
     }
 
     public function sendMessage(): void
