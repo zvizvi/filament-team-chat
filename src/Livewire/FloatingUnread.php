@@ -14,22 +14,11 @@ class FloatingUnread extends Component
     {
         $user = auth()->user();
 
-        if (! $user || ! method_exists($user, 'channels')) {
+        if (! $user || ! method_exists($user, 'unreadChatCount')) {
             return 0;
         }
 
-        $key = $user->getAuthIdentifier();
-        $total = 0;
-
-        foreach ($user->channels()->whereNull('archived_at')->get() as $channel) {
-            $total += $channel->unreadCountFor($key);
-        }
-
-        foreach ($user->conversations()->get() as $conversation) {
-            $total += $conversation->unreadCountFor($key);
-        }
-
-        return $total;
+        return $user->unreadChatCount();
     }
 
     /**

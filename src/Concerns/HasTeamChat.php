@@ -53,6 +53,24 @@ trait HasTeamChat
     }
 
     /**
+     * Total unread messages across the user's channels and direct messages.
+     */
+    public function unreadChatCount(): int
+    {
+        $total = 0;
+
+        foreach ($this->channels()->whereNull('archived_at')->get() as $channel) {
+            $total += $channel->unreadCountFor($this->getKey());
+        }
+
+        foreach ($this->conversations()->get() as $conversation) {
+            $total += $conversation->unreadCountFor($this->getKey());
+        }
+
+        return $total;
+    }
+
+    /**
      * Find or create a 1-on-1 DM with another user.
      */
     public function findOrCreateDirectMessage(int|string $otherUserId): Conversation

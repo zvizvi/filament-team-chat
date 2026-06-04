@@ -28,6 +28,28 @@ class TeamChat extends Page
         return config('team-chat.navigation_sort') ?? 1;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        if (! config('team-chat.navigation_badge', true)) {
+            return null;
+        }
+
+        $user = auth()->user();
+
+        if (! $user || ! method_exists($user, 'unreadChatCount')) {
+            return null;
+        }
+
+        $count = $user->unreadChatCount();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
+
     protected string $view = 'team-chat::pages.team-chat';
 
     protected ?string $heading = '';
