@@ -42,7 +42,8 @@
                                     wire:click="leaveChannel"
                                     wire:confirm="{{ __('team-chat::messages.leave_channel_confirm') }}"
                                     class="shrink-0 text-gray-400 hover:text-red-500 transition-colors"
-                                    title="{{ __('team-chat::messages.leave_channel') }}"
+                                    x-tooltip="{ content: @js(__('team-chat::messages.leave_channel')), theme: $store.theme }"
+                                    aria-label="{{ __('team-chat::messages.leave_channel') }}"
                                 >
                                     <x-heroicon-o-arrow-right-start-on-rectangle class="h-5 w-5" />
                                 </button>
@@ -51,7 +52,8 @@
                                     wire:click="removeMember('{{ $member->id }}')"
                                     wire:confirm="{{ __('team-chat::messages.remove_member_confirm') }}"
                                     class="shrink-0 text-gray-400 hover:text-red-500 transition-colors"
-                                    title="{{ __('team-chat::messages.remove_member') }}"
+                                    x-tooltip="{ content: @js(__('team-chat::messages.remove_member')), theme: $store.theme }"
+                                    aria-label="{{ __('team-chat::messages.remove_member') }}"
                                 >
                                     <x-heroicon-o-user-minus class="h-5 w-5" />
                                 </button>
