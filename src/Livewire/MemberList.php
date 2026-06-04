@@ -126,6 +126,23 @@ class MemberList extends Component
         $channel->members()->detach($userId);
     }
 
+    public function leaveChannel(): void
+    {
+        if ($this->messageableType !== 'channel' || ! $this->messageableId) {
+            return;
+        }
+
+        $channel = Channel::find($this->messageableId);
+
+        if (! $channel) {
+            return;
+        }
+
+        $channel->members()->detach(auth()->id());
+        $this->isOpen = false;
+        $this->dispatch('channel-left', channelId: $channel->id);
+    }
+
     public function showProfile(int|string $userId): void
     {
         $this->dispatch('show-profile', userId: $userId);

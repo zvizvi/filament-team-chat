@@ -47,6 +47,8 @@ return [
     'remove_member' => 'הסרת חבר',
     'remove_member_confirm' => 'להסיר את החבר מהערוץ?',
     'select_member' => 'בחרו חבר...',
+    'leave_channel' => 'עזיבת ערוץ',
+    'leave_channel_confirm' => 'לעזוב את הערוץ?',
 
     // Thread Panel
     'thread' => 'שרשור',

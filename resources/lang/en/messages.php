@@ -47,6 +47,8 @@ return [
     'remove_member' => 'Remove member',
     'remove_member_confirm' => 'Remove this member from the channel?',
     'select_member' => 'Select a member...',
+    'leave_channel' => 'Leave channel',
+    'leave_channel_confirm' => 'Leave this channel?',
 
     // Thread Panel
     'thread' => 'Thread',

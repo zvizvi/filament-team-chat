@@ -47,6 +47,8 @@ return [
     'remove_member' => 'メンバーを削除',
     'remove_member_confirm' => 'このメンバーをチャンネルから削除しますか？',
     'select_member' => 'メンバーを選択...',
+    'leave_channel' => 'チャンネルを退出',
+    'leave_channel_confirm' => 'このチャンネルを退出しますか？',
 
     // Thread Panel
     'thread' => 'スレッド',

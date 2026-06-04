@@ -93,4 +93,15 @@ class TeamChat extends Page
         $this->showThreadPanel = false;
         $this->threadParentId = null;
     }
+
+    #[On('channel-left')]
+    public function onChannelLeft(int $channelId): void
+    {
+        if ($this->activeType === 'channel' && $this->activeId === $channelId) {
+            $this->activeType = null;
+            $this->activeId = null;
+            $this->showThreadPanel = false;
+            $this->threadParentId = null;
+        }
+    }
 }
