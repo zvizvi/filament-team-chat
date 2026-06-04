@@ -74,13 +74,17 @@ class Channel extends Model
     }
 
     /**
-     * When an app-level manager (a user matched by the optional
-     * `team-chat.channel_manager_method` config, e.g. 'isAdmin') joins a channel,
-     * hand them ownership and demote any previous non-manager owner to member.
-     * Call this right after attaching the user as a member.
+     * When `team-chat.channel_manager_takes_ownership` is enabled and the given
+     * user is an app-level manager (matched by `team-chat.channel_manager_method`,
+     * e.g. 'isAdmin'), hand them ownership of this channel and demote any previous
+     * non-manager owner to member. Call right after attaching the user as a member.
      */
     public function transferOwnershipOnManagerJoin(Authenticatable $user): void
     {
+        if (! config('team-chat.channel_manager_takes_ownership')) {
+            return;
+        }
+
         $method = config('team-chat.channel_manager_method');
 
         if (! $method || ! method_exists($user, $method) || ! (bool) $user->{$method}()) {

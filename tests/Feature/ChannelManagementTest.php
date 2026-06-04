@@ -124,7 +124,10 @@ function channelRoleOf(Channel $channel, $user): ?string
 }
 
 it('hands ownership to a manager who joins and demotes the previous owner', function () {
-    config(['team-chat.channel_manager_method' => 'isChatManager']);
+    config([
+        'team-chat.channel_manager_takes_ownership' => true,
+        'team-chat.channel_manager_method' => 'isChatManager',
+    ]);
 
     $owner = User::factory()->create(['name' => 'Channel Owner']);  // non-admin creator
     $admin = User::factory()->create(['name' => 'Site Manager']);   // admin
@@ -147,7 +150,10 @@ it('hands ownership to a manager who joins and demotes the previous owner', func
 });
 
 it('does not change ownership when a non-manager joins', function () {
-    config(['team-chat.channel_manager_method' => 'isChatManager']);
+    config([
+        'team-chat.channel_manager_takes_ownership' => true,
+        'team-chat.channel_manager_method' => 'isChatManager',
+    ]);
 
     $owner = User::factory()->create(['name' => 'Channel Owner']);
     $member = User::factory()->create(['name' => 'Regular User']);
@@ -165,4 +171,28 @@ it('does not change ownership when a non-manager joins', function () {
 
     expect(channelRoleOf($channel, $owner))->toBe('owner')
         ->and(channelRoleOf($channel, $member))->toBe('member');
+});
+
+it('does not take ownership when the takeover is disabled', function () {
+    config([
+        'team-chat.channel_manager_takes_ownership' => false,
+        'team-chat.channel_manager_method' => 'isChatManager',
+    ]);
+
+    $owner = User::factory()->create(['name' => 'Channel Owner']);
+    $admin = User::factory()->create(['name' => 'Site Manager']);
+
+    $channel = Channel::create([
+        'name' => 'general',
+        'slug' => 'general',
+        'type' => 'public',
+        'created_by' => $owner->id,
+    ]);
+
+    $channel->members()->attach($owner->id, ['role' => 'owner']);
+    $channel->members()->attach($admin->id, ['role' => 'member']);
+    $channel->transferOwnershipOnManagerJoin($admin);
+
+    expect(channelRoleOf($channel, $owner))->toBe('owner')   // unchanged
+        ->and(channelRoleOf($channel, $admin))->toBe('member');
 });

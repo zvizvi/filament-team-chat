@@ -50,13 +50,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Channel Manager
+    | Channel Manager Takes Ownership
     |--------------------------------------------------------------------------
     |
-    | Optional boolean method on the user model (e.g. 'isAdmin'). When a user
-    | for whom it returns true joins a channel, they become its owner and any
-    | previous non-matching owner is demoted to member. Channel management is
-    | owner-based. Leave null to disable this takeover.
+    | Channel management is owner-based. When this is true, an app-level manager
+    | (see channel_manager_method) who joins a channel takes ownership of it, and
+    | the previous non-manager owner is demoted to member. Opt-in; default false.
+    |
+    */
+    'channel_manager_takes_ownership' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Channel Manager Method
+    |--------------------------------------------------------------------------
+    |
+    | Optional boolean method on the user model (e.g. 'isAdmin') that identifies
+    | the app-level managers used by the ownership takeover above. Leave null to
+    | disable the takeover.
     |
     */
     'channel_manager_method' => null,
