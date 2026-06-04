@@ -156,6 +156,11 @@ class MessageFeed extends Component
         $this->dispatch('open-thread', messageId: $messageId);
     }
 
+    public function showProfile(int|string $userId): void
+    {
+        $this->dispatch('show-profile', userId: $userId);
+    }
+
     public function render()
     {
         return view('team-chat::livewire.message-feed');

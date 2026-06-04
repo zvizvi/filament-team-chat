@@ -9,14 +9,14 @@
         @foreach($this->messages as $message)
             <div class="group flex gap-3 rounded-lg px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800/50" wire:key="message-{{ $message->id }}">
                 {{-- Avatar --}}
-                <div class="flex-shrink-0 pt-0.5">
+                <div wire:click="showProfile('{{ $message->user?->id }}')" class="flex-shrink-0 pt-0.5 cursor-pointer" title="{{ $message->user?->name }}">
                     <img src="{{ $message->user ? filament()->getUserAvatarUrl($message->user) : '' }}" alt="{{ $message->user?->name }}" class="h-9 w-9 rounded-full object-cover">
                 </div>
 
                 {{-- Content --}}
                 <div class="min-w-0 flex-1">
                     <div class="flex items-baseline gap-2">
-                        <span class="font-semibold text-sm text-gray-900 dark:text-white">
+                        <span wire:click="showProfile('{{ $message->user?->id }}')" class="font-semibold text-sm text-gray-900 dark:text-white cursor-pointer hover:underline">
                             {{ $message->user->name ?? 'Unknown' }}
                         </span>
                         <span class="text-xs text-gray-400 dark:text-gray-500">
