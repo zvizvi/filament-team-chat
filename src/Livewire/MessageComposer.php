@@ -84,7 +84,7 @@ class MessageComposer extends Component
 
         $userModel = config('team-chat.user_model');
 
-        $query = $userModel::where('id', '!=', auth()->id());
+        $query = $userModel::query();
 
         if ($scope = config('team-chat.user_scope')) {
             $query->{$scope}();
