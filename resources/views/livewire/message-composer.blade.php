@@ -68,7 +68,7 @@
                     type="submit"
                     class="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <x-heroicon-o-paper-airplane class="h-4 w-4" />
+                    <x-heroicon-o-paper-airplane class="h-4 w-4 rtl:rotate-180" />
                 </button>
             </form>
         </div>
