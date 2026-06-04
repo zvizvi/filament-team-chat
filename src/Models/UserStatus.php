@@ -46,6 +46,12 @@ class UserStatus extends Model
         return trim(($this->status_emoji ?? '').' '.($this->status_text ?? ''));
     }
 
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at !== null
+            && $this->last_seen_at->gt(now()->subSeconds((int) config('team-chat.presence.timeout', 120)));
+    }
+
     public function markOnline(): void
     {
         $this->update([

@@ -84,6 +84,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Presence (in seconds)
+    |--------------------------------------------------------------------------
+    |
+    | A user is shown as online while their last_seen_at is within `timeout`
+    | seconds. While the chat is open, last_seen_at is refreshed every
+    | `heartbeat` seconds (keep heartbeat well below timeout).
+    |
+    */
+    'presence' => [
+        'heartbeat' => 30,
+        'timeout' => 120,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Upload Settings
     |--------------------------------------------------------------------------
     */

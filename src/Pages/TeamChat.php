@@ -57,6 +57,11 @@ class TeamChat extends Page
         }
     }
 
+    public function heartbeat(): void
+    {
+        auth()->user()->touchOnline();
+    }
+
     #[On('channel-selected')]
     public function selectChannel(int $channelId): void
     {

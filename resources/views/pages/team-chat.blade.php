@@ -4,6 +4,7 @@
     </style>
 
     <div
+        wire:poll.{{ config('team-chat.presence.heartbeat', 30) }}s="heartbeat"
         x-data="{ height: 0 }"
         x-init="
             const update = () => { height = window.innerHeight - $el.getBoundingClientRect().top - 16 };

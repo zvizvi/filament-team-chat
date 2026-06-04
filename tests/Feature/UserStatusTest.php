@@ -91,3 +91,15 @@ it('accesses user status through relationship', function () {
     expect($fresh->userStatus)->not->toBeNull()
         ->and($fresh->userStatus->is_online)->toBeTrue();
 });
+
+it('reports online based on last_seen_at recency', function () {
+    config(['team-chat.presence.timeout' => 120]);
+
+    $status = $this->user->getOrCreateStatus();
+
+    $status->update(['last_seen_at' => now()]);
+    expect($status->isOnline())->toBeTrue();
+
+    $status->update(['last_seen_at' => now()->subSeconds(300)]);
+    expect($status->fresh()->isOnline())->toBeFalse();
+});

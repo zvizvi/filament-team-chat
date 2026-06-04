@@ -22,8 +22,8 @@
                                     <img src="{{ filament()->getUserAvatarUrl($member) }}" alt="{{ $member->name }}" class="h-9 w-9 rounded-full object-cover">
                                     <span @class([
                                         'absolute -bottom-0.5 -end-0.5 h-3 w-3 rounded-full border-2 border-white dark:border-gray-800',
-                                        'bg-green-400' => $member->userStatus?->is_online,
-                                        'bg-gray-300 dark:bg-gray-600' => ! $member->userStatus?->is_online,
+                                        'bg-green-400' => $member->userStatus?->isOnline(),
+                                        'bg-gray-300 dark:bg-gray-600' => ! $member->userStatus?->isOnline(),
                                     ])></span>
                                 </div>
                                 <div class="min-w-0 flex-1 text-start">
