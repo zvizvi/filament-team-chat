@@ -43,6 +43,10 @@ return [
     'public' => 'ציבורי',
     'private' => 'פרטי',
     'topic_placeholder' => 'נושא (אופציונלי)',
+    'add_member' => 'הוספת חבר',
+    'remove_member' => 'הסרת חבר',
+    'remove_member_confirm' => 'להסיר את החבר מהערוץ?',
+    'select_member' => 'בחרו חבר...',
 
     // Thread Panel
     'thread' => 'שרשור',

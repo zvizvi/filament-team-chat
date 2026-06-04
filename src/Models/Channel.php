@@ -5,6 +5,7 @@ namespace Filament\TeamChat\Models;
 use Filament\TeamChat\Concerns\BelongsToTeam;
 use Filament\TeamChat\Concerns\HasReadReceipts;
 use Filament\TeamChat\Database\Factories\ChannelFactory;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -70,6 +71,29 @@ class Channel extends Model
     public function isArchived(): bool
     {
         return $this->archived_at !== null;
+    }
+
+    /**
+     * When an app-level manager (a user matched by the optional
+     * `team-chat.channel_manager_method` config, e.g. 'isAdmin') joins a channel,
+     * hand them ownership and demote any previous non-manager owner to member.
+     * Call this right after attaching the user as a member.
+     */
+    public function transferOwnershipOnManagerJoin(Authenticatable $user): void
+    {
+        $method = config('team-chat.channel_manager_method');
+
+        if (! $method || ! method_exists($user, $method) || ! (bool) $user->{$method}()) {
+            return;
+        }
+
+        foreach ($this->members()->wherePivot('role', 'owner')->get() as $owner) {
+            if (! method_exists($owner, $method) || ! (bool) $owner->{$method}()) {
+                $this->members()->updateExistingPivot($owner->getKey(), ['role' => 'member']);
+            }
+        }
+
+        $this->members()->updateExistingPivot($user->getAuthIdentifier(), ['role' => 'owner']);
     }
 
     /**

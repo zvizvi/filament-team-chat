@@ -30,6 +30,7 @@ class Sidebar extends Component
         // Auto-join public channels on first access
         if ($channel->isPublic() && ! $channel->members()->where('user_id', auth()->id())->exists()) {
             $channel->members()->attach(auth()->id(), ['role' => 'member']);
+            $channel->transferOwnershipOnManagerJoin(auth()->user());
         }
 
         $this->activeType = 'channel';
@@ -112,6 +113,7 @@ class Sidebar extends Component
             ->findOrFail($channelId);
 
         $channel->members()->syncWithoutDetaching([auth()->id() => ['role' => 'member']]);
+        $channel->transferOwnershipOnManagerJoin(auth()->user());
 
         $this->selectChannel($channel->id);
         $this->showBrowseChannels = false;

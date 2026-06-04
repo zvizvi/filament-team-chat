@@ -117,3 +117,52 @@ it('does not allow joining archived channels', function () {
 
     expect($channel)->toBeNull();
 });
+
+function channelRoleOf(Channel $channel, $user): ?string
+{
+    return $channel->members()->wherePivot('user_id', $user->getKey())->first()?->pivot?->role;
+}
+
+it('hands ownership to a manager who joins and demotes the previous owner', function () {
+    config(['team-chat.channel_manager_method' => 'isChatManager']);
+
+    $owner = User::factory()->create(['name' => 'Channel Owner']);  // non-admin creator
+    $admin = User::factory()->create(['name' => 'Site Manager']);   // admin
+
+    $channel = Channel::create([
+        'name' => 'general',
+        'slug' => 'general',
+        'type' => 'public',
+        'created_by' => $owner->id,
+    ]);
+
+    $channel->members()->attach($owner->id, ['role' => 'owner']);
+
+    // Admin joins, then ownership transfers.
+    $channel->members()->attach($admin->id, ['role' => 'member']);
+    $channel->transferOwnershipOnManagerJoin($admin);
+
+    expect(channelRoleOf($channel, $admin))->toBe('owner')   // admin is now the owner
+        ->and(channelRoleOf($channel, $owner))->toBe('member'); // previous owner demoted
+});
+
+it('does not change ownership when a non-manager joins', function () {
+    config(['team-chat.channel_manager_method' => 'isChatManager']);
+
+    $owner = User::factory()->create(['name' => 'Channel Owner']);
+    $member = User::factory()->create(['name' => 'Regular User']);
+
+    $channel = Channel::create([
+        'name' => 'general',
+        'slug' => 'general',
+        'type' => 'public',
+        'created_by' => $owner->id,
+    ]);
+
+    $channel->members()->attach($owner->id, ['role' => 'owner']);
+    $channel->members()->attach($member->id, ['role' => 'member']);
+    $channel->transferOwnershipOnManagerJoin($member);
+
+    expect(channelRoleOf($channel, $owner))->toBe('owner')
+        ->and(channelRoleOf($channel, $member))->toBe('member');
+});

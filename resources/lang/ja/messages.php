@@ -43,6 +43,10 @@ return [
     'public' => 'パブリック',
     'private' => 'プライベート',
     'topic_placeholder' => 'トピック（任意）',
+    'add_member' => 'メンバーを追加',
+    'remove_member' => 'メンバーを削除',
+    'remove_member_confirm' => 'このメンバーをチャンネルから削除しますか？',
+    'select_member' => 'メンバーを選択...',
 
     // Thread Panel
     'thread' => 'スレッド',

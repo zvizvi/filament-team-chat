@@ -27,4 +27,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isChatManager(): bool
+    {
+        return str_contains((string) $this->name, 'Manager');
+    }
 }

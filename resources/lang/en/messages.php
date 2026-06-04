@@ -43,6 +43,10 @@ return [
     'public' => 'Public',
     'private' => 'Private',
     'topic_placeholder' => 'Topic (optional)',
+    'add_member' => 'Add member',
+    'remove_member' => 'Remove member',
+    'remove_member_confirm' => 'Remove this member from the channel?',
+    'select_member' => 'Select a member...',
 
     // Thread Panel
     'thread' => 'Thread',

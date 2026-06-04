@@ -50,6 +50,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Channel Manager
+    |--------------------------------------------------------------------------
+    |
+    | Optional boolean method on the user model (e.g. 'isAdmin'). When a user
+    | for whom it returns true joins a channel, they become its owner and any
+    | previous non-matching owner is demoted to member. Channel management is
+    | owner-based. Leave null to disable this takeover.
+    |
+    */
+    'channel_manager_method' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Polling Intervals (in seconds)
     |--------------------------------------------------------------------------
     */
