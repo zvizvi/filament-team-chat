@@ -2,6 +2,9 @@
 
 namespace Filament\TeamChat;
 
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -37,5 +40,12 @@ class FilamentTeamChatServiceProvider extends PackageServiceProvider
             classNamespace: 'Filament\\TeamChat\\Livewire',
             classPath: __DIR__.'/Livewire',
         );
+
+        if (config('team-chat.floating_button', true)) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): string => Blade::render("@livewire('team-chat::floating-unread')"),
+            );
+        }
     }
 }

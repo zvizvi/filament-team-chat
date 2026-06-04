@@ -99,6 +99,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Floating Unread Button
+    |--------------------------------------------------------------------------
+    |
+    | Show a floating chat button (bottom-left) with the total unread count on
+    | every panel page when the user has unread messages. Set to false to hide.
+    |
+    */
+    'floating_button' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Upload Settings
     |--------------------------------------------------------------------------
     */
