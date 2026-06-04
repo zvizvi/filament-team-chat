@@ -154,7 +154,7 @@ class Sidebar extends Component
 
     public function getConversationsProperty(): Collection
     {
-        return auth()->user()->conversations()->with('participants')->latest('tc_conversations.updated_at')->get();
+        return auth()->user()->conversations()->with('participants.userStatus')->latest('tc_conversations.updated_at')->get();
     }
 
     public function getAvailableUsersProperty(): Collection

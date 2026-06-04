@@ -55,4 +55,17 @@ class Conversation extends Model
             ->pluck('name')
             ->join(', ') ?: __('team-chat::messages.direct_message');
     }
+
+    /**
+     * The other participant in a one-on-one DM (null for group conversations).
+     */
+    public function otherParticipantFor(Model $user): ?Model
+    {
+        if ($this->is_group) {
+            return null;
+        }
+
+        return $this->participants
+            ->first(fn (Model $participant) => $participant->getKey() !== $user->getKey());
+    }
 }

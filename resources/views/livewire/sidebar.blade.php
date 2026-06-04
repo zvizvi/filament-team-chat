@@ -155,7 +155,16 @@
                         'font-semibold' => $unread > 0,
                     ])
                 >
-                    <x-heroicon-o-chat-bubble-oval-left class="h-4 w-4 flex-shrink-0 text-gray-400" />
+                    @php $dmPartner = $conversation->otherParticipantFor(auth()->user()); @endphp
+                    @if($dmPartner)
+                        <span @class([
+                            'h-2.5 w-2.5 flex-shrink-0 rounded-full',
+                            'bg-green-400' => $dmPartner->userStatus?->isOnline(),
+                            'bg-gray-300 dark:bg-gray-600' => ! $dmPartner->userStatus?->isOnline(),
+                        ])></span>
+                    @else
+                        <x-heroicon-o-chat-bubble-oval-left class="h-4 w-4 flex-shrink-0 text-gray-400" />
+                    @endif
                     <span class="truncate flex-1 text-start">{{ $conversation->getDisplayNameForUser(auth()->user()) }}</span>
                     @if($unread > 0)
                         <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
