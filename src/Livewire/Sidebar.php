@@ -40,6 +40,7 @@ class Sidebar extends Component
 
     #[On('message-sent')]
     #[On('channel-updated')]
+    #[On('channel-left')]
     public function refreshSidebar(): void
     {
         // Triggers re-render to update unread badges and channel names
@@ -131,14 +132,11 @@ class Sidebar extends Component
 
     public function getChannelsProperty(): Collection
     {
-        $joinedChannels = auth()->user()->channels()->whereNull('archived_at')->get();
-
-        $publicChannels = Channel::where('type', 'public')
+        return auth()->user()->channels()
             ->whereNull('archived_at')
-            ->whereNotIn('id', $joinedChannels->pluck('id'))
-            ->get();
-
-        return $joinedChannels->merge($publicChannels)->sortBy('name')->values();
+            ->get()
+            ->sortBy('name')
+            ->values();
     }
 
     public function getBrowsableChannelsProperty(): Collection
