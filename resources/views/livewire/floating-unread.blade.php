@@ -1,4 +1,4 @@
-<div wire:poll.15s>
+<div wire:poll.15s="refreshBadges">
     @if($this->url && ! $this->onChatPage && $this->unreadCount > 0)
         <a
             href="{{ $this->url }}"

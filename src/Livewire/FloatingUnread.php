@@ -33,6 +33,16 @@ class FloatingUnread extends Component
         }
     }
 
+    /**
+     * Re-render this component (refreshing the floating count) and reload the
+     * panel sidebar/topbar so the navigation badge stays in sync.
+     */
+    public function refreshBadges(): void
+    {
+        $this->dispatch('refresh-sidebar');
+        $this->dispatch('refresh-topbar');
+    }
+
     public function getOnChatPageProperty(): bool
     {
         try {
