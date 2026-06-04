@@ -8,6 +8,9 @@
                     <x-heroicon-o-chat-bubble-oval-left class="inline-block h-5 w-5 text-gray-400 me-1" />
                 @endif
                 {{ $headerName }}
+                @if($headerType === 'channel' && $isPrivate)
+                    <x-heroicon-o-lock-closed class="inline-block h-4 w-4 text-gray-400 ms-1" title="{{ __('team-chat::messages.private') }}" />
+                @endif
             </h2>
             @if($headerDescription)
                 <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $headerDescription }}</p>

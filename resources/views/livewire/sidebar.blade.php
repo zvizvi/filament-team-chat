@@ -63,6 +63,9 @@
                 >
                     <span class="text-gray-400">#</span>
                     <span class="truncate flex-1 text-start">{{ $channel->name }}</span>
+                    @if($channel->type === 'private')
+                        <x-heroicon-o-lock-closed class="h-3.5 w-3.5 text-gray-400 shrink-0" title="{{ __('team-chat::messages.private') }}" />
+                    @endif
                     @if($unread > 0)
                         <span class="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-600 px-1.5 text-xs font-medium text-white">
                             {{ $unread > 99 ? '99+' : $unread }}
@@ -84,8 +87,11 @@
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">{{ __('team-chat::messages.available_channels') }}</p>
                 @forelse($this->browsableChannels as $channel)
                     <div class="flex items-center justify-between py-1">
-                        <span class="text-sm text-gray-700 dark:text-gray-300">
+                        <span class="text-sm text-gray-700 dark:text-gray-300 inline-flex items-center gap-1">
                             <span class="text-gray-400">#</span> {{ $channel->name }}
+                            @if($channel->type === 'private')
+                                <x-heroicon-o-lock-closed class="h-3.5 w-3.5 text-gray-400" title="{{ __('team-chat::messages.private') }}" />
+                            @endif
                         </span>
                         <button
                             wire:click="joinChannel({{ $channel->id }})"

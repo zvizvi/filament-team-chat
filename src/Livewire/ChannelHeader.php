@@ -21,6 +21,8 @@ class ChannelHeader extends Component
 
     public bool $isOwner = false;
 
+    public bool $isPrivate = false;
+
     public bool $isEditing = false;
 
     public string $editName = '';
@@ -50,6 +52,7 @@ class ChannelHeader extends Component
             $this->headerDescription = $channel->topic;
             $this->memberCount = $channel->members->count();
             $this->isOwner = $channel->members->where('id', auth()->id())->first()?->pivot?->role === 'owner';
+            $this->isPrivate = $channel->type === 'private';
             $this->isEditing = false;
         }
     }
@@ -66,6 +69,7 @@ class ChannelHeader extends Component
             $this->headerDescription = $conversation->is_group ? __('team-chat::messages.group_dm') : __('team-chat::messages.direct_message');
             $this->memberCount = $conversation->participants->count();
             $this->isOwner = false;
+            $this->isPrivate = false;
             $this->isEditing = false;
         }
     }
@@ -119,6 +123,7 @@ class ChannelHeader extends Component
 
         $this->headerName = $channel->name;
         $this->headerDescription = $channel->topic;
+        $this->isPrivate = $channel->type === 'private';
         $this->isEditing = false;
         $this->dispatch('channel-updated');
     }
