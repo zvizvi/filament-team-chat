@@ -20,7 +20,7 @@
                             {{ $message->user->name ?? 'Unknown' }}
                         </span>
                         <span class="text-xs text-gray-400 dark:text-gray-500">
-                            {{ $message->created_at->format('H:i') }}
+                            {{ $message->created_at->isToday() ? $message->created_at->format('H:i') : $message->created_at->format('d/m/Y H:i') }}
                         </span>
                         @if($message->isEdited())
                             <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('team-chat::messages.edited') }}</span>
