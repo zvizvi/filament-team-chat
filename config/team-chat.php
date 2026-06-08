@@ -50,6 +50,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Navigation Icon
+    |--------------------------------------------------------------------------
+    |
+    | Icon for the Team Chat navigation item. `navigation_active_icon` is used
+    | only when the item is active; leave it null to reuse `navigation_icon`.
+    |
+    */
+    'navigation_icon' => 'heroicon-o-chat-bubble-left-right',
+    'navigation_active_icon' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Channel Manager Takes Ownership
     |--------------------------------------------------------------------------
     |

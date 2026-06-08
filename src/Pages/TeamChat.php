@@ -5,13 +5,22 @@ namespace Filament\TeamChat\Pages;
 use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Support\Enums\Width;
+use Illuminate\Contracts\Support\Htmlable;
 use Livewire\Attributes\On;
 
 class TeamChat extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-
     protected static ?string $slug = 'team-chat';
+
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return config('team-chat.navigation_icon') ?? 'heroicon-o-chat-bubble-left-right';
+    }
+
+    public static function getActiveNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return config('team-chat.navigation_active_icon') ?? static::getNavigationIcon();
+    }
 
     public static function getNavigationLabel(): string
     {
