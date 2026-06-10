@@ -57,13 +57,23 @@
                         class="sr-only"
                     />
                 </label>
-                <input
-                    type="text"
+                <textarea
+                    rows="1"
                     wire:model.live.debounce.300ms="body"
                     placeholder="{{ __('team-chat::messages.type_message') }}"
-                    class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    x-data="{
+                        resize() {
+                            $el.style.height = 'auto';
+                            $el.style.height = Math.min($el.scrollHeight, 160) + 'px';
+                        }
+                    }"
+                    x-init="$nextTick(() => resize())"
+                    x-effect="$wire.body, resize()"
+                    x-on:input="resize()"
+                    x-on:keydown.enter="if (! $event.shiftKey) { $event.preventDefault(); $wire.sendMessage(); }"
+                    class="flex-1 resize-none overflow-y-auto rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
                     autocomplete="off"
-                />
+                ></textarea>
                 <button
                     type="submit"
                     class="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
