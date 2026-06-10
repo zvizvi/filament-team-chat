@@ -17,7 +17,7 @@ class SendMessage
      */
     public function execute(Model $messageable, int|string $userId, string $body, ?int $parentId = null, array $files = []): Message
     {
-        $bodyHtml = Str::markdown($body);
+        $bodyHtml = Str::markdown($body, ['renderer' => ['soft_break' => '<br>']]);
 
         $message = Message::create([
             'messageable_type' => $messageable->getMorphClass(),

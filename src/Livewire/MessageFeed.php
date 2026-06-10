@@ -133,7 +133,7 @@ class MessageFeed extends Component
 
         $message->update([
             'body' => $this->editBody,
-            'body_html' => Str::markdown($this->editBody),
+            'body_html' => Str::markdown($this->editBody, ['renderer' => ['soft_break' => '<br>']]),
             'edited_at' => now(),
         ]);
 
