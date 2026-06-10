@@ -61,17 +61,8 @@
                     rows="1"
                     wire:model.live.debounce.300ms="body"
                     placeholder="{{ __('team-chat::messages.type_message') }}"
-                    x-data="{
-                        resize() {
-                            $el.style.height = 'auto';
-                            $el.style.height = Math.min($el.scrollHeight, 160) + 'px';
-                        }
-                    }"
-                    x-init="$nextTick(() => resize())"
-                    x-effect="$wire.body, resize()"
-                    x-on:input="resize()"
                     x-on:keydown.enter="if (! $event.shiftKey) { $event.preventDefault(); $wire.sendMessage(); }"
-                    class="flex-1 resize-none overflow-y-auto rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                    class="flex-1 resize-none overflow-y-auto rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 max-h-40 [field-sizing:content]"
                     autocomplete="off"
                 ></textarea>
                 <button
