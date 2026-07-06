@@ -20,6 +20,7 @@ return [
 
     // Message Feed
     'no_messages' => 'まだメッセージがありません。最初のメッセージを送信しましょう！',
+    'new_messages' => '新着メッセージ',
     'edited' => '(編集済み)',
     'reply' => '返信',
     'react' => 'リアクション',

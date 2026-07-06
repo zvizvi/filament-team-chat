@@ -20,6 +20,7 @@ return [
 
     // Message Feed
     'no_messages' => 'No messages yet. Send the first one!',
+    'new_messages' => 'New messages',
     'edited' => '(edited)',
     'reply' => 'Reply',
     'react' => 'React',

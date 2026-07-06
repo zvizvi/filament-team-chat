@@ -20,6 +20,7 @@ return [
 
     // Message Feed
     'no_messages' => 'אין עדיין הודעות. שלחו את הראשונה!',
+    'new_messages' => 'הודעות חדשות',
     'edited' => '(נערך)',
     'reply' => 'מענה',
     'react' => 'תגובה',

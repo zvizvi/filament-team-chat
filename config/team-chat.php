@@ -96,6 +96,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Message Pagination
+    |--------------------------------------------------------------------------
+    |
+    | Only the latest `page_size` messages are loaded when opening a channel
+    | or DM. Scrolling to the top of the feed loads earlier messages in
+    | batches of the same size until the full history is loaded.
+    |
+    */
+    'pagination' => [
+        'page_size' => 100,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Presence (in seconds)
     |--------------------------------------------------------------------------
     |

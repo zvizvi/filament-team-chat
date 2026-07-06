@@ -1,4 +1,48 @@
-<div class="h-full overflow-y-auto p-4 space-y-1" id="message-feed" wire:poll.{{ config('team-chat.polling.messages', 3) }}s x-data x-on:click="$event.target.matches('.tc-mention--user') && $wire.showProfile($event.target.dataset.userId)">
+<div
+    class="h-full overflow-y-auto p-4 space-y-1"
+    id="message-feed"
+    wire:poll.{{ config('team-chat.polling.messages', 3) }}s
+    x-data="{
+        loadingMore: false,
+        nearBottom: true,
+        pendingScrollToBottom: false,
+        init() {
+            this.$nextTick(() => this.scrollToStart());
+            this.$wire.$watch('lastMessageId', () => this.onNewMessages());
+        },
+        scrollToStart() {
+            const marker = this.$el.querySelector('#tc-unread-marker');
+            if (marker) { marker.scrollIntoView({ block: 'center' }); } else { this.scrollToBottom(); }
+        },
+        scrollToBottom() {
+            this.$el.scrollTop = this.$el.scrollHeight;
+        },
+        onScroll() {
+            this.nearBottom = this.$el.scrollHeight - this.$el.scrollTop - this.$el.clientHeight < 100;
+            this.maybeLoadMore();
+        },
+        onNewMessages() {
+            if (! this.nearBottom && ! this.pendingScrollToBottom) { return; }
+            this.pendingScrollToBottom = false;
+            this.$nextTick(() => this.scrollToBottom());
+        },
+        async maybeLoadMore() {
+            if (this.loadingMore || ! this.$wire.hasMoreMessages || this.$el.scrollTop > 300) { return; }
+            this.loadingMore = true;
+            const previousHeight = this.$el.scrollHeight;
+            const previousTop = this.$el.scrollTop;
+            await this.$wire.loadMoreMessages();
+            this.$nextTick(() => {
+                this.$el.scrollTop = this.$el.scrollHeight - previousHeight + previousTop;
+                this.loadingMore = false;
+                this.maybeLoadMore();
+            });
+        },
+    }"
+    x-on:scroll="onScroll"
+    x-on:message-sent.window="pendingScrollToBottom = true"
+    x-on:click="$event.target.matches('.tc-mention--user') && $wire.showProfile($event.target.dataset.userId)"
+>
     @if($this->messages->isEmpty())
         <div class="flex h-full items-center justify-center">
             <p class="text-gray-400 dark:text-gray-500 text-sm">
@@ -6,7 +50,20 @@
             </p>
         </div>
     @else
+        @if($hasMoreMessages)
+            <div wire:key="tc-load-more" class="flex justify-center py-2" wire:loading.flex wire:target="loadMoreMessages">
+                <x-filament::loading-indicator class="h-5 w-5 text-gray-400" />
+            </div>
+        @endif
+
         @foreach($this->messages as $message)
+            @if($firstUnreadMessageId === $message->id)
+                <div id="tc-unread-marker" wire:key="tc-unread-marker" class="flex items-center gap-2 py-1">
+                    <span class="h-px flex-1 bg-red-400/60 dark:bg-red-500/50"></span>
+                    <span class="text-xs font-medium text-red-500 dark:text-red-400">{{ __('team-chat::messages.new_messages') }}</span>
+                    <span class="h-px flex-1 bg-red-400/60 dark:bg-red-500/50"></span>
+                </div>
+            @endif
             <div class="group flex gap-3 rounded-lg px-2 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-800/50" wire:key="message-{{ $message->id }}">
                 {{-- Avatar --}}
                 <div wire:click="showProfile('{{ $message->user?->id }}')" class="flex-shrink-0 pt-0.5 cursor-pointer" title="{{ $message->user?->name }}">
