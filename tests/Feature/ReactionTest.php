@@ -2,14 +2,19 @@
 
 use Filament\TeamChat\Actions\SendMessage;
 use Filament\TeamChat\Actions\ToggleReaction;
+use Filament\TeamChat\Livewire\MessageFeed;
 use Filament\TeamChat\Models\Channel;
 use Filament\TeamChat\Models\Reaction;
 use Filament\TeamChat\Tests\Fixtures\User;
 use Illuminate\Database\QueryException;
 
+use function Pest\Livewire\livewire;
+
 beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->otherUser = User::factory()->create();
+    // Fixed names: the tooltip assertions below compare against them, and faker
+    // names may contain characters that get HTML-escaped in the rendered markup.
+    $this->user = User::factory()->create(['name' => 'Sarah']);
+    $this->otherUser = User::factory()->create(['name' => 'Moshe']);
     $this->actingAs($this->user);
 
     $this->channel = Channel::create([
@@ -90,6 +95,44 @@ it('cascades delete when message is deleted', function () {
     $this->message->forceDelete();
 
     expect(Reaction::count())->toBe(0);
+});
+
+it('shows who reacted in a tooltip on the reaction pill', function () {
+    app(ToggleReaction::class)->execute($this->message->id, $this->user->id, '👍');
+    app(ToggleReaction::class)->execute($this->message->id, $this->otherUser->id, '👍');
+
+    livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
+        ->assertSee('You and '.$this->otherUser->name.' reacted with 👍', escape: false);
+});
+
+it('addresses the current user directly when they are the only reactor', function () {
+    app(ToggleReaction::class)->execute($this->message->id, $this->user->id, '👍');
+
+    livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
+        ->assertSee('You reacted with 👍', escape: false)
+        ->assertDontSee($this->user->name.' reacted with 👍', escape: false);
+});
+
+it('names a single other reactor without the current user', function () {
+    app(ToggleReaction::class)->execute($this->message->id, $this->otherUser->id, '👍');
+
+    livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
+        ->assertSee($this->otherUser->name.' reacted with 👍', escape: false)
+        ->assertDontSee('You', escape: false);
+});
+
+it('conjugates the reaction tooltip per person and count in Hebrew', function () {
+    app()->setLocale('he');
+
+    app(ToggleReaction::class)->execute($this->message->id, $this->user->id, '👍');
+    app(ToggleReaction::class)->execute($this->message->id, $this->otherUser->id, '❤️');
+    app(ToggleReaction::class)->execute($this->message->id, $this->user->id, '🚀');
+    app(ToggleReaction::class)->execute($this->message->id, $this->otherUser->id, '🚀');
+
+    livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
+        ->assertSee('אתה הגבת 👍', escape: false)
+        ->assertSee($this->otherUser->name.' הגיב ❤️', escape: false)
+        ->assertSee('אתה ו'.$this->otherUser->name.' הגיבו 🚀', escape: false);
 });
 
 it('can group reactions by emoji', function () {

@@ -2,6 +2,8 @@
 
 namespace Filament\TeamChat\Tests;
 
+use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
+use BladeUI\Icons\BladeIconsServiceProvider;
 use Filament\FilamentServiceProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -22,10 +24,18 @@ class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
+        /**
+         * Livewire must be registered *after* Filament's SupportServiceProvider:
+         * Support binds `DataStore::class` non-shared (to `DataStoreOverride`), which
+         * would otherwise clobber the shared instance Livewire registers for it, so
+         * every `store()` call would hit a fresh store and lose component state.
+         */
         return [
-            LivewireServiceProvider::class,
+            BladeIconsServiceProvider::class,
+            BladeHeroiconsServiceProvider::class,
             FilamentServiceProvider::class,
             SupportServiceProvider::class,
+            LivewireServiceProvider::class,
             FilamentTeamChatServiceProvider::class,
             TestPanelProvider::class,
         ];
@@ -67,6 +77,7 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
+        $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
         $app['config']->set('team-chat.user_model', Fixtures\User::class);
         $app['config']->set('session.driver', 'array');
     }

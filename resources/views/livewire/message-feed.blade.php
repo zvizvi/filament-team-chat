@@ -174,8 +174,29 @@
                     @if($message->reactions->isNotEmpty())
                         <div class="mt-1 flex flex-wrap gap-1">
                             @foreach($message->reactions->groupBy('emoji') as $emoji => $reactions)
+                                @php
+                                    $reactedByCurrentUser = $reactions->contains('user_id', auth()->id());
+                                    $reactorNames = $reactions
+                                        ->map(fn ($reaction) => $reaction->user_id === auth()->id()
+                                            ? __('team-chat::messages.you')
+                                            : ($reaction->user?->name ?? __('team-chat::messages.unknown_user')))
+                                        ->values();
+
+                                    // Hebrew conjugates the verb per person and count, so the
+                                    // "you" / single / multiple cases each get their own string.
+                                    $reactorsLabel = match (true) {
+                                        $reactorNames->count() === 1 && $reactedByCurrentUser => __('team-chat::messages.reacted_by_you', ['emoji' => $emoji]),
+                                        $reactorNames->count() === 1 => __('team-chat::messages.reacted_by_one', ['user' => $reactorNames->first(), 'emoji' => $emoji]),
+                                        default => __('team-chat::messages.reacted_by_many', [
+                                            'users' => $reactorNames->join(', ', __('team-chat::messages.and')),
+                                            'emoji' => $emoji,
+                                        ]),
+                                    };
+                                @endphp
                                 <button
                                     wire:click="addReaction({{ $message->id }}, '{{ $emoji }}')"
+                                    x-tooltip="{ content: @js($reactorsLabel), theme: $store.theme }"
+                                    aria-label="{{ $reactorsLabel }}"
                                     @class([
                                         'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors',
                                         'border-primary-300 bg-primary-50 text-primary-700 dark:border-primary-600 dark:bg-primary-900/30 dark:text-primary-300' => $reactions->contains('user_id', auth()->id()),

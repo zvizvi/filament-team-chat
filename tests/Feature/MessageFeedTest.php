@@ -93,7 +93,7 @@ it('captures the first unread message and renders the new messages divider', fun
 
     livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
         ->assertSet('firstUnreadMessageId', $unread[0]->id)
-        ->assertSeeHtml('tc-unread-marker')
+        ->assertSeeHtml('id="tc-unread-marker"')
         ->assertSee(__('team-chat::messages.new_messages'));
 
     expect($this->channel->unreadCountFor($this->user->id))->toBe(0);
@@ -105,7 +105,7 @@ it('does not render the divider when everything has been read', function () {
 
     livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
         ->assertSet('firstUnreadMessageId', null)
-        ->assertDontSeeHtml('tc-unread-marker');
+        ->assertDontSeeHtml('id="tc-unread-marker"');
 });
 
 it('does not render the divider when the channel was never read', function () {
@@ -113,7 +113,7 @@ it('does not render the divider when the channel was never read', function () {
 
     livewire(MessageFeed::class, ['initialType' => 'channel', 'initialId' => $this->channel->id])
         ->assertSet('firstUnreadMessageId', null)
-        ->assertDontSeeHtml('tc-unread-marker');
+        ->assertDontSeeHtml('id="tc-unread-marker"');
 });
 
 it('widens the initial window so the first unread message is always loaded', function () {
@@ -129,7 +129,7 @@ it('widens the initial window so the first unread message is always loaded', fun
     $component
         ->assertSet('firstUnreadMessageId', $unread[0]->id)
         ->assertSee('msg-006')
-        ->assertSeeHtml('tc-unread-marker');
+        ->assertSeeHtml('id="tc-unread-marker"');
 
     expect($component->get('oldestLoadedMessageId'))->toBeLessThanOrEqual($unread[0]->id);
 });
